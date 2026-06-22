@@ -13,50 +13,46 @@ body {
   background: #fafaf9;
   color: #1a1a1a;
   line-height: 1.5;
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 2.5rem 1.5rem 4rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 1.5rem 2rem;
 }
 
 h1 {
-  font-size: 30px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
 }
 
-/* Signature touch: a terracotta-to-green bar under the title, echoing
-   the two-runner accent pair used throughout the head-to-head page. */
 h1::after {
   content: "";
   display: block;
-  width: 120px;
-  height: 4px;
-  margin-top: 12px;
+  width: 140px;
+  height: 5px;
+  margin: 16px auto 0;
   border-radius: 4px;
   background: linear-gradient(90deg, #D85A30, #1D9E75);
 }
 
-nav {
-  margin: 20px 0 28px;
+.tagline {
+  font-size: 16px;
+  font-weight: 400;
+  color: #666;
+  margin-top: 12px;
+  letter-spacing: 0;
 }
 
-nav a {
-  display: inline-block;
-  font-size: 13px;
-  font-weight: 600;
-  color: #1a1a1a;
-  text-decoration: none;
-  background: white;
-  border: 1px solid #e8e7e2;
-  border-radius: 20px;
-  padding: 7px 16px;
-  transition: border-color 0.15s ease, color 0.15s ease;
+main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
 }
 
-nav a:hover,
-nav a:focus-visible {
-  border-color: #D85A30;
-  color: #D85A30;
+.search-section {
+  margin-bottom: 24px;
 }
 
 #runner-search {
@@ -132,17 +128,73 @@ nav a:focus-visible {
   display: none;
 }
 
+.head-to-head-section {
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid #e8e7e2;
+}
+
+.section-header {
+  margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #1a1a1a;
+}
+
+.section-subtitle {
+  font-size: 14px;
+  color: #999;
+  font-weight: 400;
+}
+
+.cta-link {
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(135deg, #D85A30 0%, #1D9E75 100%);
+  border-radius: 8px;
+  padding: 12px 24px;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: 0 2px 8px rgba(216, 90, 48, 0.2);
+}
+
+.cta-link:hover,
+.cta-link:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(216, 90, 48, 0.3);
+}
+
+.cta-link:focus-visible {
+  outline: 2px solid #D85A30;
+  outline-offset: 2px;
+}
+
 @media (max-width: 480px) {
-  body {
-    padding: 1.75rem 1rem 3rem;
+  header {
+    padding: 2rem 1rem 1.5rem;
   }
 
   h1 {
-    font-size: 24px;
+    font-size: 36px;
+  }
+
+  main {
+    padding: 0 1rem 3rem;
   }
 
   #runner-list {
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  }
+
+  .head-to-head-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
   }
 }
 
