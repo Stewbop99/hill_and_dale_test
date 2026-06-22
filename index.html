@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hill and Dale — Runners</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <h1>Hill and Dale</h1>
+  <nav>
+    <a href="head-to-head/index.html">Head to Head</a>
+  </nav>
+
+  <!-- ============================================================
+       Runner directory: search/filter box narrows the list below
+       as you type. The <li> list itself is plain HTML (not built
+       from a JSON fetch) — at 400 runners, your export script
+       should GENERATE this whole block automatically each time
+       you add a runner, rather than hand-editing it.
+       ============================================================ -->
+
+  <input
+    type="text"
+    id="runner-search"
+    placeholder="Search runners..."
+    autocomplete="off"
+  >
+
+  <ul id="runner-list">
+    <li><a href="runners/jim-brown.html">Jim Brown</a></li>
+        <li><a href="runners/brendan-ward.html">Brendan Ward</a></li>
+    <li><a href="runners/brian-travers.html">Brian Travers</a></li>
+    <li><a href="runners/clarke-campbell.html">Clarke Campbell</a></li>
+    <li><a href="runners/daniel-mcritchie.html">Daniel Mcritchie</a></li>
+    <li><a href="runners/david-bell.html">David Bell</a></li>
+    <li><a href="runners/david-johnston.html">David Johnston</a></li>
+    <li><a href="runners/david-ross.html">David Ross</a></li>
+    <li><a href="runners/graham-jewhurst.html">Graham Jewhurst</a></li>
+    <li><a href="runners/john-adgey.html">John Adgey</a></li>
+    <li><a href="runners/john-magee.html">John Magee</a></li>
+    <li><a href="runners/nathaniel-shelton.html">Nathaniel Shelton</a></li>
+    <li><a href="runners/neville-ross.html">Neville Ross</a></li>
+    <li><a href="runners/owen-mcmurray.html">Owen Mcmurray</a></li>
+    <li><a href="runners/patrick-butler.html">Patrick Butler</a></li>
+    <li><a href="runners/patrick-mallon.html">Patrick Mallon</a></li>
+    <li><a href="runners/rory-blake-knox.html">Rory Blake Knox</a></li>
+    <li><a href="runners/stephen-waterworth.html">Stephen Waterworth</a></li>
+    <li><a href="runners/stewart-magill.html">Stewart Magill</a></li>
+    <li><a href="runners/wayne-storey.html">Wayne Storey</a></li>
+    <li><a href="runners/william-miscampbell.html">William Miscampbell</a></li>
+    <!-- export script appends one <li> per runner here -->
+  </ul>
+
+  <p id="no-results" hidden>No runners match that search.</p>
+
+  <script src="assets/js/widgets.js"></script>
+  <script src="assets/js/runner-search.js"></script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+/* Hill and Dale — landing page
+   Visual language matches head-to-head/index.html: warm off-white
+   background, white rounded cards, terracotta + green accent pair. */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #fafaf9;
+  color: #1a1a1a;
+  line-height: 1.5;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+h1 {
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Signature touch: a terracotta-to-green bar under the title, echoing
+   the two-runner accent pair used throughout the head-to-head page. */
+h1::after {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 4px;
+  margin-top: 12px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #D85A30, #1D9E75);
+}
+
+nav {
+  margin: 20px 0 28px;
+}
+
+nav a {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-decoration: none;
+  background: white;
+  border: 1px solid #e8e7e2;
+  border-radius: 20px;
+  padding: 7px 16px;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+nav a:hover,
+nav a:focus-visible {
+  border-color: #D85A30;
+  color: #D85A30;
+}
+
+#runner-search {
+  display: block;
+  width: 100%;
+  font-size: 14px;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  color: #1a1a1a;
+  margin-bottom: 24px;
+}
+
+#runner-search::placeholder {
+  color: #aaa;
+}
+
+#runner-search:focus,
+#runner-search:focus-visible {
+  outline: none;
+  border-color: #D85A30;
+  box-shadow: 0 0 0 3px rgba(216, 90, 48, 0.15);
+}
+
+/* Runner directory: card grid instead of a bullet list.
+   Hidden by default so the landing page is search-only — runner-search.js
+   switches this to `grid` once there's a matching query. */
+#runner-list {
+  list-style: none;
+  display: none;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+#runner-list li {
+  background: white;
+  border: 1px solid #e8e7e2;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+#runner-list li:hover {
+  border-color: #D85A30;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+#runner-list a {
+  display: block;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+#runner-list a:focus-visible {
+  outline: 2px solid #D85A30;
+  outline-offset: -2px;
+  border-radius: 10px;
+}
+
+#no-results {
+  font-size: 14px;
+  color: #9e9e9e;
+  text-align: center;
+  padding: 2.5rem 0;
+}
+
+#no-results[hidden] {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 1.75rem 1rem 3rem;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  #runner-list {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #runner-list li,
+  nav a,
+  #runner-search {
+    transition: none;
+  }
+}

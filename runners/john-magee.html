@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>John Magee — Hill and Dale</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  /* Page-level layout for stacked widget sections. Each widget's own
+     styles are scoped under .widget-<type> above, so these rules only
+     control spacing/structure between sections, not widget internals. */
+  body { margin: 0; padding: 0; background: #f3f2ee; }
+  .page-header {
+    max-width: 1000px; margin: 0 auto; padding: 24px 16px 0;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  .page-header a { font-size: 13px; color: #1D9E75; text-decoration: none; }
+  .page-header h1 { font-size: 28px; margin: 8px 0 4px; }
+  .widget {
+    max-width: 1000px; margin: 24px auto; padding: 0 16px;
+  }
+  .widget-section-title {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; color: #888; margin: 0 0 10px;
+  }
+  .widget-inner {
+    background: transparent;
+  }
+</style>
+</head>
+<body>
+  <div class="page-header">
+    <a href="../index.html">&larr; All runners</a>
+    <h1>John Magee</h1>
+  </div>
+
+<section class="widget widget-best-day" id="section-best-day" data-runner="john-magee">
+  <h2 class="widget-section-title">Best Ever Run</h2>
+  <style>
+/* --- best_day styles, scoped under .widget-best-day --- */
+.widget-best-day, .widget-best-day *::before, .widget-best-day *::after { box-sizing: border-box; }
+.widget-best-day {
+    font-family: system-ui, -apple-system, sans-serif;
+    max-width: 480px; margin: 2rem auto; padding: 0 1rem;
+    background: #fff; color: #1a1a1a;
+  }
+.widget-best-day .card {
+    background: #FAFAF8; border-radius: 16px;
+    padding: 24px 20px 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+  }
+.widget-best-day .header-title {
+    font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 2px;
+  }
+.widget-best-day .header-sub {
+    font-size: 13px; color: #999; margin: 0 0 4px;
+  }
+.widget-best-day .runner-name {
+    font-size: 16px; font-weight: 600; margin: 8px 0 14px; color: #1a1a1a;
+  }
+.widget-best-day .runner-meta {
+    font-weight: 400; font-size: 13px; color: #888;
+  }
+.widget-best-day /* toggle */
+  .toggle {
+    display: flex; gap: 4px; margin-bottom: 20px;
+    background: #EEEDE9; border-radius: 8px; padding: 3px;
+  }
+.widget-best-day .toggle button {
+    flex: 1; padding: 7px 0; font-size: 13px; font-weight: 400;
+    border: none; border-radius: 6px; cursor: pointer;
+    background: transparent; color: #888; transition: all 0.15s ease;
+  }
+.widget-best-day .toggle button.active {
+    background: #fff; color: #1a1a1a; font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+.widget-best-day /* podium */
+  .podium {
+    display: flex; gap: 8px; align-items: flex-end;
+    min-height: 220px; padding: 0 4px;
+  }
+.widget-best-day .podium-slot {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; align-self: flex-end;
+  }
+.widget-best-day .race-info {
+    text-align: center; margin-bottom: 10px; min-height: 58px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+.widget-best-day .medal-emoji { line-height: 1; margin-bottom: 4px; }
+.widget-best-day .race-name { font-size: 13px; font-weight: 600; color: #1a1a1a; letter-spacing: -0.01em; }
+.widget-best-day .race-year { font-size: 11px; color: #888; margin-top: 1px; }
+.widget-best-day .block {
+    width: 100%; border-radius: 8px 8px 0 0;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; padding: 8px 4px;
+    border-bottom: none;
+  }
+.widget-best-day .block-time {
+    font-weight: 700; color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+  }
+.widget-best-day .block-score {
+    font-size: 10px; color: rgba(255,255,255,0.85); margin-top: 3px;
+    text-align: center; line-height: 1.3; text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+  }
+.widget-best-day .block-place {
+    font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 3px;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+  }
+.widget-best-day /* medal-specific */
+  .gold .medal-emoji { font-size: 28px; }
+.widget-best-day .silver .medal-emoji, .widget-best-day .bronze .medal-emoji { font-size: 22px; }
+.widget-best-day .gold .block {
+    height: 140px;
+    background: linear-gradient(170deg, #D4A418 0%, #F2D06B 40%, #C8962E 100%);
+    border: 1px solid #B8860B; border-bottom: none;
+    box-shadow: 0 2px 12px rgba(212,164,24,0.25);
+  }
+.widget-best-day .gold .block-time { font-size: 22px; }
+.widget-best-day .silver .block {
+    height: 108px;
+    background: linear-gradient(170deg, #A8ACB0 0%, #D0D3D6 40%, #8A8D90 100%);
+    border: 1px solid #9E9E9E; border-bottom: none;
+  }
+.widget-best-day .silver .block-time { font-size: 18px; }
+.widget-best-day .bronze .block {
+    height: 80px;
+    background: linear-gradient(170deg, #A0623A 0%, #C48A5E 40%, #8B5E3C 100%);
+    border: 1px solid #8B5E3C; border-bottom: none;
+  }
+.widget-best-day .bronze .block-time { font-size: 18px; }
+.widget-best-day .floor {
+    height: 2px; background: #E0DFD9; border-radius: 1px; margin-bottom: 14px;
+  }
+.widget-best-day .footer {
+    font-size: 11px; color: #aaa; text-align: center; line-height: 1.4;
+  }
+</style>
+  <div class="widget-inner">
+    
+<div class="card">
+  <div class="header-title">BEST EVER RUN</div>
+  <p class="header-sub">The one you nailed</p>
+  <div class="runner-name">John Magee <span class="runner-meta">&middot; 1 races</span></div>
+
+  <div class="toggle">
+    <button id="best-day-btn-actual" class="active" onclick="show('actual')">Actual</button>
+    <button id="best-day-btn-adjusted" onclick="show('adjusted')">Age-adjusted</button>
+  </div>
+
+  <div class="podium" id="best-day-podium"></div>
+  <div class="floor"></div>
+  <div class="footer" id="best-day-footer"></div>
+</div>
+
+
+
+  </div>
+  <script>
+(function() {
+
+const ACTUAL   = [{"race": "Rocky", "year": 2019, "time": "00:53:11", "score": 37.4, "place": 167, "field": 166}];
+const ADJUSTED = [{"race": "Rocky", "year": 2019, "time": "00:53:11", "score": 37.4, "place": 167, "field": 166}];
+const TIER_COMMENT_POOLS = {"gold": ["Sweet spot days!", "When you shone the brightest!", "When the stop watch loves you back", "When the hills rolled out a red carpet", "When the gradient lost the argument!", "Trying to stay ahead of the midges!", "Career Peak", "Top of Your Game", "Your Sharpest Form", "The One You Nailed", "Your Benchmark Day", "Your Defining Run"], "silver": ["Goldilocks Races", "The days you found the flow!", "Thriving not surviving!", "When you ran like you stole someone else's lungs!", "When you heard that the food was disappearing at Doran's", "At Your Best", "Peak on the Peaks", "When Everything Clicked", "Prime Time Performance", "Your High-Water Mark", "Your Peak Moment", "Your Top Gear Day"], "bronze": ["The planets all lined up on these days!", "Mojo working races!", "Me one - gravity nil!", "A wild mountain TIME!", "When you heard that the beer was running out at Mary Margaret's", "Peak of Your Powers", "Your Finest Hour", "The Day It All Came Together", "Your Standout Race", "Your Gold-Standard Run", "Your Signature Race", "Your Breakout Performance!"]};
+const TIER_COMMENTS = {};
+for (const tier in TIER_COMMENT_POOLS) {
+  const pool = TIER_COMMENT_POOLS[tier];
+  TIER_COMMENTS[tier] = pool.length ? pool[Math.floor(Math.random() * pool.length)] : '';
+}
+
+const MEDALS  = ['🥇', '🥈', '🥉'];
+const CLASSES = ['gold', 'silver', 'bronze'];
+// Podium visual order: silver(1) – gold(0) – bronze(2)
+const ORDER = [1, 0, 2];
+
+function ordinal(n) {
+  if (n >= 11 && n <= 13) return 'th';
+  return {1:'st',2:'nd',3:'rd'}[n % 10] || 'th';
+}
+
+function fmtTime(t) {
+  return (t && t.startsWith('00:')) ? t.slice(3) : t;
+}
+
+function scoreLabel(s) {
+  if (s < 0) return Math.abs(s).toFixed(1) + '% faster than elite';
+  if (s === 0) return 'matched elite pace';
+  return s.toFixed(1) + '% off elite pace';
+}
+
+function show(mode) {
+  var races = mode === 'actual' ? ACTUAL : ADJUSTED;
+  var el = document.getElementById('best-day-podium');
+  el.innerHTML = '';
+
+  // Handle runners with fewer than 3 races
+  var indices = races.length >= 3 ? ORDER : races.map(function(_,i) { return i; });
+
+  indices.forEach(function(dataIdx) {
+    if (dataIdx >= races.length) return;
+    var r = races[dataIdx];
+    var rank = dataIdx;  // 0=gold, 1=silver, 2=bronze
+    var cls = CLASSES[rank];
+
+    var slot = document.createElement('div');
+    slot.className = 'podium-slot ' + cls;
+
+    var placeHtml = '';
+    if (r.place != null) {
+      placeHtml = '<div class="block-place">' + r.place + ordinal(r.place) + ' of ' + r.field + '</div>';
+    }
+
+    var comment = TIER_COMMENTS[cls] || '';
+    var tooltipText = comment ? comment : 'Top performance';
+
+    slot.innerHTML =
+      '<div class="race-info">' +
+        '<div class="medal-emoji">' + MEDALS[rank] + '</div>' +
+        '<div class="race-name">' + r.race + '</div>' +
+        '<div class="race-year">' + r.year + '</div>' +
+      '</div>' +
+      '<div class="block" title="' + tooltipText.replace(/"/g, '&quot;') + '">' +
+        '<div class="block-time">' + fmtTime(r.time) + '</div>' +
+        '<div class="block-score">' + scoreLabel(r.score) + '</div>' +
+        placeHtml +
+      '</div>';
+
+    el.appendChild(slot);
+  });
+
+  // Toggle button states
+  document.getElementById('best-day-btn-actual').className  = mode === 'actual'   ? 'active' : '';
+  document.getElementById('best-day-btn-adjusted').className = mode === 'adjusted' ? 'active' : '';
+
+  // Footer
+  document.getElementById('best-day-footer').textContent = mode === 'actual'
+    ? 'Ranked by gap to top-15% pace \u2014 closest to the sharp end of the field'
+    : 'Age-adjusted times \u2014 how you\u2019d stack up if everyone raced at their prime';
+}
+
+show('actual');
+
+})();
+</script>
+</section>
+
+<section class="widget widget-best-year widget-missing"><p style="font-family:system-ui,sans-serif;color:#b00;padding:16px;">Missing Best Year widget for john-magee — placeholder, re-run export once the file exists.</p></section>
+
+<section class="widget widget-career" id="section-career" data-runner="john-magee">
+  <h2 class="widget-section-title">Career</h2>
+  <style>
+/* --- career styles, scoped under .widget-career --- */
+.widget-career { margin: 0; padding: 0; box-sizing: border-box; }
+.widget-career {
+    font-family: system-ui, -apple-system, sans-serif;
+    max-width: 1000px; margin: 2rem auto; padding: 0 1rem;
+    background: #fafaf9; color: #1a1a1a;
+  }
+.widget-career .card {
+    background: white; border-radius: 12px; padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+.widget-career h1 { font-size: 24px; font-weight: 600; margin-bottom: 4px; }
+.widget-career .subtitle { font-size: 13px; color: #888; margin-bottom: 20px; }
+.widget-career .legend {
+    display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; font-size: 12px; color: #666;
+  }
+.widget-career .legend-item { display: flex; align-items: center; gap: 6px; }
+.widget-career .legend-swatch { width: 10px; height: 10px; border-radius: 50%; }
+.widget-career .legend-line { width: 20px; height: 2px; }
+.widget-career .chart-wrap { position: relative; width: 100%; height: 400px; margin-bottom: 24px; }
+.widget-career .comment-para { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 16px; }
+.widget-career .footer { font-size: 12px; color: #888; }
+</style>
+  <div class="widget-inner">
+    
+<div class="card">
+  <h1>John Magee</h1>
+  <p class="subtitle">Performance over time (1 races, 2019–2019)</p>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-swatch" style="background:#1D9E75;"></div><span>Raw (vs field)</span></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#D85A30;"></div><span>Age-adjusted</span></div>
+    <div class="legend-item"><div class="legend-line" style="border-top:2.5px solid #1D9E75;"></div><span>Raw trend +0.00%/yr</span></div>
+    <div class="legend-item"><div class="legend-line" style="border-top:2.5px dashed #D85A30;"></div><span>Age-adj trend +0.00%/yr</span></div>
+  </div>
+  <div class="chart-wrap"><canvas id="career-chart"></canvas></div>
+  <p class="comment-para" id="career-comment" style="display:none;"></p>
+  <p class="footer">Y-axis inverted: up = faster. Hover for race details. Trend lines fit all individual races. Age-adjusted trend flat = ageing at the typical rate; rising = ageing well; falling = ageing faster than typical.</p>
+</div>
+
+
+
+  </div>
+  <script>
+(function() {
+
+const JITTERED = [2018.94];
+const RAW = [0.3745];
+const ADJ = [0.3091];
+const TOOLTIPS = ["Rocky \u00b7 2019"];
+const FINISH_TIMES = ["00:53:11"];
+const TREND_X = [2019, 2019];
+const TREND_RAW_Y = [0, 0];
+const TREND_ADJ_Y = [0, 0];
+
+new Chart(document.getElementById('career-chart'), {
+  type: 'scatter',
+  data: {
+    datasets: [
+      {
+        label: 'Raw trend',
+        type: 'line',
+        data: TREND_X.map((x, i) => ({x: x, y: TREND_RAW_Y[i]})),
+        borderColor: '#1D9E75',
+        borderWidth: 2.5,
+        pointRadius: 0,
+        tension: 0,
+        fill: false,
+        order: 2
+      },
+      {
+        label: 'Age-adj trend',
+        type: 'line',
+        data: TREND_X.map((x, i) => ({x: x, y: TREND_ADJ_Y[i]})),
+        borderColor: '#D85A30',
+        borderWidth: 2.5,
+        borderDash: [6, 4],
+        pointRadius: 0,
+        tension: 0,
+        fill: false,
+        order: 1
+      },
+      {
+        label: 'Raw',
+        data: JITTERED.map((y, i) => ({x: y, y: RAW[i], idx: i})),
+        backgroundColor: 'rgba(29, 158, 117, 0.6)',
+        borderColor: '#1D9E75',
+        borderWidth: 1,
+        pointRadius: 5,
+        pointStyle: 'circle',
+        order: 4
+      },
+      {
+        label: 'Age-adjusted',
+        data: JITTERED.map((y, i) => ({x: y, y: ADJ[i], idx: i})),
+        backgroundColor: 'rgba(216, 90, 48, 0.6)',
+        borderColor: '#D85A30',
+        borderWidth: 1,
+        pointRadius: 6,
+        pointStyle: 'triangle',
+        order: 3
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'nearest', intersect: true },
+    scales: {
+      x: {
+        type: 'linear',
+        min: 2018.5,
+        max: 2019.5,
+        ticks: { stepSize: 1, autoSkip: false, maxRotation: 45, callback: function(v) { return Number.isInteger(v) ? v : ''; } },
+        grid: { color: 'rgba(128, 128, 128, 0.1)' }
+      },
+      y: {
+        reverse: true,
+        title: { display: true, text: 'faster ↑  relative to field  ↓ slower' },
+        grid: { color: 'rgba(128, 128, 128, 0.1)' }
+      }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        filter: (ctx) => ['Raw', 'Age-adjusted'].includes(ctx.dataset.label),
+        callbacks: {
+          title: (ctx) => { const idx = ctx[0].raw.idx; return TOOLTIPS[idx]; },
+          label: (ctx) => {
+            const idx = ctx.raw.idx;
+            let line = ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(3);
+            if (ctx.dataset.label === 'Raw') { line += '  (' + FINISH_TIMES[idx] + ')'; }
+            return line;
+          }
+        }
+      }
+    }
+  }
+});
+
+// --- Comment variants: pre-written offline, shipped in full, picked at random on load. ---
+// This is the "select, don't generate" pattern — nothing is created at view time, it just
+// rolls a die over data already embedded in this page. Refresh to see a different (but
+// always pre-written, fact-checked) sentence.
+const GENERIC_COMMENTS = ["Aging gracefully - holding steady against the field. You and your younger self would be well matched!", "True to type - no drift just dependable form.", "Steady as she goes - aging as expected.", "Kept the line level - consistent with the population trend; same pace more wisdom.", "No surprises - your age-adjusted pace stayed true. You and your younger self should run together sometime!"];
+const BACKGROUND_COMMENTS = [];
+
+(function() {
+  const parts = [];
+  if (GENERIC_COMMENTS.length) {
+    parts.push(GENERIC_COMMENTS[Math.floor(Math.random() * GENERIC_COMMENTS.length)]);
+  }
+  if (BACKGROUND_COMMENTS.length) {
+    parts.push(BACKGROUND_COMMENTS[Math.floor(Math.random() * BACKGROUND_COMMENTS.length)]);
+  }
+  if (parts.length) {
+    const el = document.getElementById('career-comment');
+    el.textContent = parts.join(' ');
+    el.style.display = '';
+  }
+})();
+
+})();
+</script>
+</section>
+
+<section class="widget widget-best-route" id="section-best-route" data-runner="john-magee">
+  <h2 class="widget-section-title">Best Route</h2>
+  <style>
+/* --- best_route styles, scoped under .widget-best-route --- */
+.widget-best-route { margin: 0; padding: 0; box-sizing: border-box; }
+.widget-best-route {
+    font-family: system-ui, -apple-system, sans-serif;
+    max-width: 800px; margin: 2rem auto; padding: 0 1rem;
+    background: #fafaf9; color: #1a1a1a;
+  }
+.widget-best-route .card {
+    background: white; border-radius: 12px; padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+.widget-best-route h1 {
+    font-size: 22px; font-weight: 500; margin-bottom: 4px;
+  }
+.widget-best-route .subtitle {
+    font-size: 13px; color: #888; margin-bottom: 20px;
+  }
+.widget-best-route .legend {
+    display: flex; gap: 20px; margin-bottom: 20px; font-size: 12px; color: #666;
+  }
+.widget-best-route .legend-item {
+    display: flex; align-items: center; gap: 6px;
+  }
+.widget-best-route .legend-swatch {
+    width: 12px; height: 12px; border-radius: 2px;
+  }
+.widget-best-route .chart-wrap {
+    position: relative; width: 100%; height: 60px; margin-bottom: 20px;
+  }
+.widget-best-route .footer {
+    font-size: 12px; color: #888; line-height: 1.6;
+  }
+</style>
+  <div class="widget-inner">
+    
+<div class="card">
+  <h1>John Magee</h1>
+  <p class="subtitle">Route suitability across Mourne fell races</p>
+
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-swatch" style="background: #1D9E75;"></div>
+      <span>Suits them</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background: #D85A30;"></div>
+      <span>Bogey route</span>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <canvas id="best-route-chart" role="img" aria-label="Route suitability for John Magee"></canvas>
+  </div>
+
+  <p class="footer">
+    ← Bogey routes (underperform) | % vs own expectation | Suit them →<br>
+    Scores control for era bias, personal trend, and field strength. Numbers in parentheses show races run on each route.
+  </p>
+</div>
+
+
+
+
+  </div>
+  <script>
+(function() {
+
+const LABELS = ["Rocky (1)"];
+const VALUES = [-0.261185619301955];
+const COLORS = ["#D85A30"];
+const ROUTE_TITLES = ["Rocky"];
+const COMMENT_POOLS = [["This route owes you an apology and a lift home."]];
+const TOOLTIPS = ROUTE_TITLES.map((title, i) => {
+  const pool = COMMENT_POOLS[i];
+  if (!pool.length) return title;
+  const comment = pool[Math.floor(Math.random() * pool.length)];
+  return title + ': ' + comment;
+});
+
+new Chart(document.getElementById('best-route-chart'), {
+  type: 'bar',
+  data: {
+    labels: LABELS,
+    datasets: [{
+      label: '% vs own expectation',
+      data: VALUES,
+      backgroundColor: COLORS,
+      borderRadius: 4,
+      barPercentage: 0.8
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        beginAtZero: true,
+        ticks: { callback: v => (v > 0 ? '+' : '') + v + '%' },
+        grid: { color: 'rgba(128,128,128,0.1)' }
+      },
+      y: {
+        grid: { display: false }
+      }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => TOOLTIPS[ctx.dataIndex]
+        }
+      }
+    }
+  }
+});
+
+})();
+</script>
+</section>
+
+<section class="widget widget-most-reliable widget-missing"><p style="font-family:system-ui,sans-serif;color:#b00;padding:16px;">Missing Most Reliable widget for john-magee — placeholder, re-run export once the file exists.</p></section>
+
+</body>
+</html>
