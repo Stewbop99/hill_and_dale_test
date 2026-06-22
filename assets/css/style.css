@@ -13,6 +13,7 @@ body {
   background: #fafaf9;
   color: #1a1a1a;
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 header {
