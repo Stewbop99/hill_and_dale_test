@@ -21,9 +21,8 @@
     max-width: 1000px; margin: 24px auto; padding: 0 16px;
   }
   .widget-section-title {
-    font-family: system-ui, -apple-system, sans-serif;
-    font-size: 13px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.06em; color: #888; margin: 0 0 10px;
+    height: 0; margin: 0 0 10px; overflow: hidden;
+    font-size: 1px; line-height: 0; color: transparent;
   }
   .widget-inner {
     background: transparent;
@@ -58,10 +57,10 @@
     font-size: 13px; color: #999; margin: 0 0 4px;
   }
 .widget-best-day .runner-name {
-    font-size: 16px; font-weight: 600; margin: 8px 0 14px; color: #1a1a1a;
+    font-size: 13px; font-weight: 400; margin: 0 0 4px; color: #999;
   }
 .widget-best-day .runner-meta {
-    font-weight: 400; font-size: 13px; color: #888;
+    font-weight: 400; font-size: 13px; color: #999;
   }
 .widget-best-day /* toggle */
   .toggle {
@@ -144,9 +143,9 @@
   <div class="widget-inner">
     
 <div class="card">
-  <div class="header-title">BEST EVER RUN</div>
-  <p class="header-sub">The one you nailed</p>
   <div class="runner-name">John Magee <span class="runner-meta">&middot; 1 races</span></div>
+  <div class="header-title">BEST EVER RUN</div>
+  <p class="header-sub">The one you nailed &mdash; best single performance relative to the rest of the bunch</p>
 
   <div class="toggle">
     <button id="best-day-btn-actual" class="active">Actual</button>
@@ -217,6 +216,7 @@ function show(mode) {
 
     var comment = TIER_COMMENTS[cls] || '';
     var tooltipText = comment ? comment : 'Top performance';
+    var titleAttr = cls === 'gold' ? (' title="' + tooltipText.replace(/"/g, '&quot;') + '"') : '';
 
     slot.innerHTML =
       '<div class="race-info">' +
@@ -224,7 +224,7 @@ function show(mode) {
         '<div class="race-name">' + r.race + '</div>' +
         '<div class="race-year">' + r.year + '</div>' +
       '</div>' +
-      '<div class="block" title="' + tooltipText.replace(/"/g, '&quot;') + '">' +
+      '<div class="block"' + titleAttr + '>' +
         '<div class="block-time">' + fmtTime(r.time) + '</div>' +
         '<div class="block-score">' + scoreLabel(r.score) + '</div>' +
         placeHtml +
@@ -268,7 +268,8 @@ show('actual');
     background: white; border-radius: 12px; padding: 2rem;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
-.widget-career-chart h1 { font-size: 24px; font-weight: 600; margin-bottom: 4px; }
+.widget-career-chart h1 { font-size: 13px; font-weight: 400; color: #999; margin: 0 0 2px; }
+.widget-career-chart .header-title { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 4px; }
 .widget-career-chart .subtitle { font-size: 13px; color: #888; margin-bottom: 20px; }
 .widget-career-chart .legend {
     display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; font-size: 12px; color: #666;
@@ -284,9 +285,10 @@ show('actual');
     
 <div class="card">
   <h1>John Magee</h1>
+  <div class="header-title">CAREER TIMELINE</div>
   <p class="subtitle">Performance over time (1 races, 2019–2019)</p>
   <div class="legend">
-    <div class="legend-item"><div class="legend-swatch" style="background:#1D9E75;"></div><span>Raw (vs field)</span></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#1D9E75;"></div><span>Raw score &mdash; mouse over for race times</span></div>
     <div class="legend-item"><div class="legend-swatch" style="background:#D85A30;"></div><span>Age-adjusted</span></div>
     <div class="legend-item"><div class="legend-line" style="border-top:2.5px solid #1D9E75;"></div><span>Raw trend +0.00%/yr</span></div>
     <div class="legend-item"><div class="legend-line" style="border-top:2.5px dashed #D85A30;"></div><span>Age-adj trend +0.00%/yr</span></div>
@@ -437,7 +439,10 @@ const BACKGROUND_COMMENTS = [];
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
 .widget-best-route h1 {
-    font-size: 22px; font-weight: 500; margin-bottom: 4px;
+    font-size: 13px; font-weight: 400; color: #999; margin: 0 0 2px;
+  }
+.widget-best-route .header-title {
+    font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 4px;
   }
 .widget-best-route .subtitle {
     font-size: 13px; color: #888; margin-bottom: 20px;
@@ -462,7 +467,8 @@ const BACKGROUND_COMMENTS = [];
     
 <div class="card">
   <h1>John Magee</h1>
-  <p class="subtitle">Route suitability across Mourne fell races</p>
+  <div class="header-title">BEST ROUTE</div>
+  <p class="subtitle">The terrain that suits your style</p>
 
   <div class="legend">
     <div class="legend-item">

@@ -21,9 +21,8 @@
     max-width: 1000px; margin: 24px auto; padding: 0 16px;
   }
   .widget-section-title {
-    font-family: system-ui, -apple-system, sans-serif;
-    font-size: 13px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.06em; color: #888; margin: 0 0 10px;
+    height: 0; margin: 0 0 10px; overflow: hidden;
+    font-size: 1px; line-height: 0; color: transparent;
   }
   .widget-inner {
     background: transparent;
@@ -58,10 +57,10 @@
     font-size: 13px; color: #999; margin: 0 0 4px;
   }
 .widget-best-day .runner-name {
-    font-size: 16px; font-weight: 600; margin: 8px 0 14px; color: #1a1a1a;
+    font-size: 13px; font-weight: 400; margin: 0 0 4px; color: #999;
   }
 .widget-best-day .runner-meta {
-    font-weight: 400; font-size: 13px; color: #888;
+    font-weight: 400; font-size: 13px; color: #999;
   }
 .widget-best-day /* toggle */
   .toggle {
@@ -144,9 +143,9 @@
   <div class="widget-inner">
     
 <div class="card">
-  <div class="header-title">BEST EVER RUN</div>
-  <p class="header-sub">The one you nailed</p>
   <div class="runner-name">Patrick Mallon <span class="runner-meta">&middot; 61 races</span></div>
+  <div class="header-title">BEST EVER RUN</div>
+  <p class="header-sub">The one you nailed &mdash; best single performance relative to the rest of the bunch</p>
 
   <div class="toggle">
     <button id="best-day-btn-actual" class="active">Actual</button>
@@ -217,6 +216,7 @@ function show(mode) {
 
     var comment = TIER_COMMENTS[cls] || '';
     var tooltipText = comment ? comment : 'Top performance';
+    var titleAttr = cls === 'gold' ? (' title="' + tooltipText.replace(/"/g, '&quot;') + '"') : '';
 
     slot.innerHTML =
       '<div class="race-info">' +
@@ -224,7 +224,7 @@ function show(mode) {
         '<div class="race-name">' + r.race + '</div>' +
         '<div class="race-year">' + r.year + '</div>' +
       '</div>' +
-      '<div class="block" title="' + tooltipText.replace(/"/g, '&quot;') + '">' +
+      '<div class="block"' + titleAttr + '>' +
         '<div class="block-time">' + fmtTime(r.time) + '</div>' +
         '<div class="block-score">' + scoreLabel(r.score) + '</div>' +
         placeHtml +
@@ -257,7 +257,8 @@ show('actual');
   <style>
 /* --- best_year styles, scoped under .widget-best-year --- */
 .widget-best-year { font-family: system-ui, -apple-system, sans-serif; max-width: 1500px; margin: 2rem auto; padding: 0 1rem; background: #fff; color: #1a1a1a; }
-.widget-best-year h1 { font-size: 22px; font-weight: 500; margin: 0 0 4px; }
+.widget-best-year h1 { font-size: 13px; font-weight: 400; color: #999; margin: 0 0 2px; }
+.widget-best-year .header-title { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 4px; }
 .widget-best-year .subtitle { font-size: 14px; color: #666; margin-bottom: 16px; }
 .widget-best-year .legend { display: flex; gap: 16px; margin-bottom: 12px; font-size: 12px; color: #666; }
 .widget-best-year .legend span { display: flex; align-items: center; gap: 4px; }
@@ -271,6 +272,7 @@ show('actual');
   <div class="widget-inner">
     
 <h1>Patrick Mallon</h1>
+<div class="header-title">BEST YEAR</div>
 <p class="subtitle">61 races across 9 qualifying seasons &middot; age-adjusted</p>
 <div class="legend">
   <span><span class="swatch" style="background:#1D9E75;"></span>Best year</span>
@@ -373,7 +375,8 @@ new Chart(document.getElementById('best-year-chart'), {
     background: white; border-radius: 12px; padding: 2rem;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
-.widget-career-chart h1 { font-size: 24px; font-weight: 600; margin-bottom: 4px; }
+.widget-career-chart h1 { font-size: 13px; font-weight: 400; color: #999; margin: 0 0 2px; }
+.widget-career-chart .header-title { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 4px; }
 .widget-career-chart .subtitle { font-size: 13px; color: #888; margin-bottom: 20px; }
 .widget-career-chart .legend {
     display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; font-size: 12px; color: #666;
@@ -389,9 +392,10 @@ new Chart(document.getElementById('best-year-chart'), {
     
 <div class="card">
   <h1>Patrick Mallon</h1>
+  <div class="header-title">CAREER TIMELINE</div>
   <p class="subtitle">Performance over time (61 races, 2009–2025)</p>
   <div class="legend">
-    <div class="legend-item"><div class="legend-swatch" style="background:#1D9E75;"></div><span>Raw (vs field)</span></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#1D9E75;"></div><span>Raw score &mdash; mouse over for race times</span></div>
     <div class="legend-item"><div class="legend-swatch" style="background:#D85A30;"></div><span>Age-adjusted</span></div>
     <div class="legend-item"><div class="legend-line" style="border-top:2.5px solid #1D9E75;"></div><span>Raw trend +0.93%/yr</span></div>
     <div class="legend-item"><div class="legend-line" style="border-top:2.5px dashed #D85A30;"></div><span>Age-adj trend +0.07%/yr</span></div>
@@ -542,7 +546,10 @@ const BACKGROUND_COMMENTS = ["Best days were 2009 to 2012 when the adjusted scor
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
 .widget-best-route h1 {
-    font-size: 22px; font-weight: 500; margin-bottom: 4px;
+    font-size: 13px; font-weight: 400; color: #999; margin: 0 0 2px;
+  }
+.widget-best-route .header-title {
+    font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 4px;
   }
 .widget-best-route .subtitle {
     font-size: 13px; color: #888; margin-bottom: 20px;
@@ -567,7 +574,8 @@ const BACKGROUND_COMMENTS = ["Best days were 2009 to 2012 when the adjusted scor
     
 <div class="card">
   <h1>Patrick Mallon</h1>
-  <p class="subtitle">Route suitability across Mourne fell races</p>
+  <div class="header-title">BEST ROUTE</div>
+  <p class="subtitle">The terrain that suits your style</p>
 
   <div class="legend">
     <div class="legend-item">
@@ -655,7 +663,9 @@ new Chart(document.getElementById('best-route-chart'), {
   <style>
 /* --- most_reliable styles, scoped under .widget-most-reliable --- */
 .widget-most-reliable { background: #fafaf9; color: #1a1a1a; font-family: -apple-system, system-ui, sans-serif; padding: 1rem; max-width: 1500px; margin: 0 auto; }
-.widget-most-reliable h1 { color: #1a1a1a; font-size: 16px; font-weight: 500; margin-bottom: 1rem; }
+.widget-most-reliable h1 { font-size: 13px; font-weight: 400; color: #999; margin: 0 0 2px; }
+.widget-most-reliable .header-title { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 4px; color: #1a1a1a; }
+.widget-most-reliable .header-sub { font-size: 14px; color: #666; margin-bottom: 1rem; }
 .widget-most-reliable .heroes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
 .widget-most-reliable .hero { background: #ffffff; border: 1px solid #e0dfd9; border-radius: 12px; padding: 1.5rem; text-align: center; }
 .widget-most-reliable .hero-label { font-size: 18px; color: #666; margin-bottom: 6px; }
@@ -680,7 +690,9 @@ new Chart(document.getElementById('best-route-chart'), {
 </style>
   <div class="widget-inner">
     
-<h1>Patrick Mallon — consistency by year</h1>
+<h1>Patrick Mallon</h1>
+<div class="header-title">MOST CONSISTENT SEASON</div>
+<p class="header-sub">No breakouts, no shockers, just steady</p>
 <div class="heroes">
   <div class="hero">
     <div class="hero-label">Most consistent year</div>
