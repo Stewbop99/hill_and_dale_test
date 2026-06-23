@@ -63,11 +63,19 @@ header {
   margin-top: 6px;
 }
 
+.search-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin-top: 40px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
 .search-section {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 24px;
+  margin-bottom: 60px;
 }
 
 #runner-search {
@@ -157,7 +165,7 @@ header {
 }
 
 .head-to-head-section {
-  margin-top: 40px;
+  margin-top: 80px;
   padding: 32px 28px;
   background: white;
   border: 1px solid #e5e5e0;
@@ -172,9 +180,9 @@ header {
 }
 
 .section-header h2 {
-  font-size: 18px;
+  font-size: 28px;
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: 10px;
 }
 
 .section-subtitle {
