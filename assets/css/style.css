@@ -21,6 +21,19 @@ body.index-page {
   max-width: 680px;
 }
 
+/* Back navigation link — appears on head-to-head and runner pages */
+.page-header a, a[href="../index.html"] {
+  font-size: 13px;
+  color: #1D9E75;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.page-header a::before, a[href="../index.html"]::before {
+  content: "← ";
+}
+
 h1 {
   font-size: 32px;
   font-weight: 700;
