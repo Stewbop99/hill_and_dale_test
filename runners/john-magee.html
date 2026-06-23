@@ -403,7 +403,7 @@ new Chart(document.getElementById('career-chart-chart'), {
 // rolls a die over data already embedded in this page. Refresh to see a different (but
 // always pre-written, fact-checked) sentence.
 const GENERIC_COMMENTS = ["Aging gracefully - holding steady against the field. You and your younger self would be well matched!", "True to type - no drift just dependable form.", "Steady as she goes - aging as expected.", "Kept the line level - consistent with the population trend; same pace more wisdom.", "No surprises - your age-adjusted pace stayed true. You and your younger self should run together sometime!"];
-const BACKGROUND_COMMENTS = [];
+const BACKGROUND_COMMENTS = ["A single dot on the chart — Rocky 2019 — so there's no arc to trace, just one clean data point and a story still unwritten. The one outing was a tidy one, which only makes the long silence since more intriguing. He's good at looking after your money, so the planning instincts are there whenever a structured return takes his fancy. One race isn't a trend; it's a teaser. He hasn't been at many races of late, and some people say he is secretly training for a comeback. We, on the other hand, think he gave up because he couldn't catch Will Miscampbell.", "One race, one point, all the potential in the world — John Magee's Rocky 2019 reads less like a career chart than a paused game waiting on the player to come back. No trend to age-adjust, no decline to fret over, just unfinished business. A man who is good at looking after your money knows the value of a well-timed move, and a return would be exactly that. The rumour mill is busy: some people say he is secretly training for a comeback. Others reckon he gave up because he couldn't catch Will Miscampbell — you can decide which is more likely."];
 
 (function() {
   const parts = [];
@@ -502,7 +502,7 @@ const LABELS = ["Rocky (1)"];
 const VALUES = [-0.261185619301955];
 const COLORS = ["#D85A30"];
 const ROUTE_TITLES = ["Rocky"];
-const COMMENT_POOLS = [["This route owes you an apology and a lift home."]];
+const COMMENT_POOLS = [["This route owes you an apology and a lift home.", "Short, sharp, and steep at the end — like getting the solicitor's fee."]];
 const TOOLTIPS = ROUTE_TITLES.map((title, i) => {
   const pool = COMMENT_POOLS[i];
   if (!pool.length) return title;
