@@ -149,8 +149,8 @@
   <div class="runner-name">Patrick Mallon <span class="runner-meta">&middot; 61 races</span></div>
 
   <div class="toggle">
-    <button id="best-day-btn-actual" class="active" onclick="show('actual')">Actual</button>
-    <button id="best-day-btn-adjusted" onclick="show('adjusted')">Age-adjusted</button>
+    <button id="best-day-btn-actual" class="active">Actual</button>
+    <button id="best-day-btn-adjusted">Age-adjusted</button>
   </div>
 
   <div class="podium" id="best-day-podium"></div>
@@ -165,7 +165,7 @@
 (function() {
 
 const ACTUAL   = [{"race": "Loughshannagh", "year": 2011, "time": "00:51:13", "score": 6.2, "place": 18, "field": 131}, {"race": "Loughshannagh", "year": 2009, "time": "00:50:22", "score": 7.6, "place": 23, "field": 138}, {"race": "Rocky", "year": 2009, "time": "00:38:49", "score": 8.5, "place": 29, "field": 127}];
-const ADJUSTED = [{"race": "Loughshannagh", "year": 2011, "time": "00:51:13", "score": 6.2, "place": 18, "field": 131}, {"race": "Loughshannagh", "year": 2009, "time": "00:50:22", "score": 7.6, "place": 23, "field": 138}, {"race": "Rocky", "year": 2009, "time": "00:38:49", "score": 8.5, "place": 29, "field": 127}];
+const ADJUSTED = [{"race": "Loughshannagh", "year": 2011, "time": "00:46:42", "score": -3.0, "place": 18, "field": 131}, {"race": "Loughshannagh", "year": 2019, "time": "00:46:41", "score": -2.9, "place": 43, "field": 132}, {"race": "Slieve Martin", "year": 2019, "time": "00:38:20", "score": -2.7, "place": 60, "field": 172}];
 const TIER_COMMENT_POOLS = {"gold": ["Sweet spot days!", "When you shone the brightest!", "When the stop watch loves you back", "When the hills rolled out a red carpet", "When the gradient lost the argument!", "Trying to stay ahead of the midges!", "Career Peak", "Top of Your Game", "Your Sharpest Form", "The One You Nailed", "Your Benchmark Day", "Your Defining Run"], "silver": ["Goldilocks Races", "The days you found the flow!", "Thriving not surviving!", "When you ran like you stole someone else's lungs!", "When you heard that the food was disappearing at Doran's", "At Your Best", "Peak on the Peaks", "When Everything Clicked", "Prime Time Performance", "Your High-Water Mark", "Your Peak Moment", "Your Top Gear Day"], "bronze": ["The planets all lined up on these days!", "Mojo working races!", "Me one - gravity nil!", "A wild mountain TIME!", "When you heard that the beer was running out at Mary Margaret's", "Peak of Your Powers", "Your Finest Hour", "The Day It All Came Together", "Your Standout Race", "Your Gold-Standard Run", "Your Signature Race", "Your Breakout Performance!"]};
 const TIER_COMMENTS = {};
 for (const tier in TIER_COMMENT_POOLS) {
@@ -242,6 +242,9 @@ function show(mode) {
     ? 'Ranked by gap to top-15% pace \u2014 closest to the sharp end of the field'
     : 'Age-adjusted times \u2014 how you\u2019d stack up if everyone raced at their prime';
 }
+
+document.getElementById('best-day-btn-actual').addEventListener('click', function() { show('actual'); });
+document.getElementById('best-day-btn-adjusted').addEventListener('click', function() { show('adjusted'); });
 
 show('actual');
 
@@ -356,31 +359,31 @@ new Chart(document.getElementById('best-year-chart'), {
 </script>
 </section>
 
-<section class="widget widget-career" id="section-career" data-runner="patrick-mallon">
+<section class="widget widget-career-chart" id="section-career-chart" data-runner="patrick-mallon">
   <h2 class="widget-section-title">Career</h2>
   <style>
-/* --- career styles, scoped under .widget-career --- */
-.widget-career { margin: 0; padding: 0; box-sizing: border-box; }
-.widget-career {
+/* --- career_chart styles, scoped under .widget-career-chart --- */
+.widget-career-chart { margin: 0; padding: 0; box-sizing: border-box; }
+.widget-career-chart {
     font-family: system-ui, -apple-system, sans-serif;
-    max-width: 1000px; margin: 2rem auto; padding: 0 1rem;
+    max-width: 1500px; margin: 2rem auto; padding: 0 1rem;
     background: #fafaf9; color: #1a1a1a;
   }
-.widget-career .card {
+.widget-career-chart .card {
     background: white; border-radius: 12px; padding: 2rem;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
-.widget-career h1 { font-size: 24px; font-weight: 600; margin-bottom: 4px; }
-.widget-career .subtitle { font-size: 13px; color: #888; margin-bottom: 20px; }
-.widget-career .legend {
+.widget-career-chart h1 { font-size: 24px; font-weight: 600; margin-bottom: 4px; }
+.widget-career-chart .subtitle { font-size: 13px; color: #888; margin-bottom: 20px; }
+.widget-career-chart .legend {
     display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; font-size: 12px; color: #666;
   }
-.widget-career .legend-item { display: flex; align-items: center; gap: 6px; }
-.widget-career .legend-swatch { width: 10px; height: 10px; border-radius: 50%; }
-.widget-career .legend-line { width: 20px; height: 2px; }
-.widget-career .chart-wrap { position: relative; width: 100%; height: 400px; margin-bottom: 24px; }
-.widget-career .comment-para { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 16px; }
-.widget-career .footer { font-size: 12px; color: #888; }
+.widget-career-chart .legend-item { display: flex; align-items: center; gap: 6px; }
+.widget-career-chart .legend-swatch { width: 10px; height: 10px; border-radius: 50%; }
+.widget-career-chart .legend-line { width: 20px; height: 2px; }
+.widget-career-chart .chart-wrap { position: relative; width: 100%; height: 400px; margin-bottom: 24px; }
+.widget-career-chart .comment-para { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 16px; }
+.widget-career-chart .footer { font-size: 12px; color: #888; }
 </style>
   <div class="widget-inner">
     
@@ -393,8 +396,8 @@ new Chart(document.getElementById('best-year-chart'), {
     <div class="legend-item"><div class="legend-line" style="border-top:2.5px solid #1D9E75;"></div><span>Raw trend +0.93%/yr</span></div>
     <div class="legend-item"><div class="legend-line" style="border-top:2.5px dashed #D85A30;"></div><span>Age-adj trend +0.07%/yr</span></div>
   </div>
-  <div class="chart-wrap"><canvas id="career-chart"></canvas></div>
-  <p class="comment-para" id="career-comment" style="display:none;"></p>
+  <div class="chart-wrap"><canvas id="career-chart-chart"></canvas></div>
+  <p class="comment-para" id="career-chart-comment" style="display:none;"></p>
   <p class="footer">Y-axis inverted: up = faster. Hover for race details. Trend lines fit all individual races. Age-adjusted trend flat = ageing at the typical rate; rising = ageing well; falling = ageing faster than typical.</p>
 </div>
 
@@ -413,7 +416,7 @@ const TREND_X = [2009, 2025];
 const TREND_RAW_Y = [0.1339, 0.2826];
 const TREND_ADJ_Y = [0.0579, 0.0697];
 
-new Chart(document.getElementById('career-chart'), {
+new Chart(document.getElementById('career-chart-chart'), {
   type: 'scatter',
   data: {
     datasets: [
@@ -514,7 +517,7 @@ const BACKGROUND_COMMENTS = ["Best days were 2009 to 2012 when the adjusted scor
     parts.push(BACKGROUND_COMMENTS[Math.floor(Math.random() * BACKGROUND_COMMENTS.length)]);
   }
   if (parts.length) {
-    const el = document.getElementById('career-comment');
+    const el = document.getElementById('career-chart-comment');
     el.textContent = parts.join(' ');
     el.style.display = '';
   }

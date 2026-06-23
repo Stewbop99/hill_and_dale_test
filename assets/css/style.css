@@ -13,9 +13,12 @@ body {
   background: #fafaf9;
   color: #1a1a1a;
   line-height: 1.6;
-  max-width: 680px;
   margin: 0 auto;
   padding: 2.5rem 1.5rem 4rem;
+}
+
+body.index-page {
+  max-width: 680px;
 }
 
 h1 {
