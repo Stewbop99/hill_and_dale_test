@@ -12,6 +12,7 @@
   var input = document.getElementById('runner-search');
   var list = document.getElementById('runner-list');
   var noResults = document.getElementById('no-results');
+  var searchCount = document.getElementById('search-count'); // optional — fine if absent
 
   if (!input || !list || !noResults) return;
 
@@ -25,6 +26,7 @@
     if (query === '') {
       list.style.display = 'none';
       noResults.hidden = true;
+      if (searchCount) searchCount.hidden = true;
       return;
     }
 
@@ -37,6 +39,15 @@
 
     list.style.display = matches > 0 ? 'grid' : 'none';
     noResults.hidden = matches > 0;
+
+    if (searchCount) {
+      if (matches > 0) {
+        searchCount.textContent = matches + (matches === 1 ? ' runner found' : ' runners found');
+        searchCount.hidden = false;
+      } else {
+        searchCount.hidden = true; // #no-results already covers the zero case
+      }
+    }
   }
 
   input.addEventListener('input', render);

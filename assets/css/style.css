@@ -13,59 +13,56 @@ body {
   background: #fafaf9;
   color: #1a1a1a;
   line-height: 1.5;
-  overflow-x: hidden;
-}
-
-header {
-  text-align: center;
-  padding: 3rem 1.5rem 2rem;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
 }
 
 h1 {
-  font-size: 48px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.5rem;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
+/* Signature touch: a terracotta-to-green bar under the title, echoing
+   the two-runner accent pair used throughout the head-to-head page. */
 h1::after {
   content: "";
   display: block;
-  width: 140px;
-  height: 5px;
-  margin: 16px auto 0;
+  width: 120px;
+  height: 4px;
+  margin-top: 12px;
   border-radius: 4px;
   background: linear-gradient(90deg, #D85A30, #1D9E75);
 }
 
-.tagline {
-  font-size: 16px;
-  font-weight: 400;
-  color: #666;
-  margin-top: 12px;
-  letter-spacing: 0;
+header {
+  margin-bottom: 28px;
 }
 
-main {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 0 1.5rem 4rem;
+.tagline {
+  font-size: 14px;
+  color: #888;
+  margin-top: 6px;
 }
 
 .search-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 24px;
 }
 
 #runner-search {
   display: block;
   width: 100%;
+  flex: 1;
   font-size: 14px;
   padding: 10px 14px;
   border: 1px solid #ddd;
   border-radius: 8px;
   background: white;
   color: #1a1a1a;
-  margin-bottom: 24px;
 }
 
 #runner-search::placeholder {
@@ -77,6 +74,13 @@ main {
   outline: none;
   border-color: #D85A30;
   box-shadow: 0 0 0 3px rgba(216, 90, 48, 0.15);
+}
+
+.search-count {
+  font-size: 13px;
+  color: #9e9e9e;
+  white-space: nowrap;
+  flex: none;
 }
 
 /* Runner directory: card grid instead of a bullet list.
@@ -130,78 +134,61 @@ main {
 }
 
 .head-to-head-section {
-  margin-top: 4rem;
-  padding-top: 3rem;
-  border-top: 1px solid #e8e7e2;
-}
-
-.section-header {
-  margin-bottom: 1.5rem;
+  margin-top: 32px;
+  padding: 24px;
+  background: white;
+  border: 1px solid #e8e7e2;
+  border-radius: 12px;
+  text-align: center;
 }
 
 .section-header h2 {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #1a1a1a;
+  margin-bottom: 4px;
 }
 
 .section-subtitle {
-  font-size: 14px;
-  color: #999;
-  font-weight: 400;
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 16px;
 }
 
 .cta-link {
   display: inline-block;
-  font-size: 15px;
-  font-weight: 500;
-  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
   text-decoration: none;
-  background: linear-gradient(135deg, #D85A30 0%, #1D9E75 100%);
-  border-radius: 8px;
-  padding: 12px 24px;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
-  box-shadow: 0 2px 8px rgba(216, 90, 48, 0.2);
+  background: #D85A30;
+  border-radius: 20px;
+  padding: 10px 22px;
+  transition: background 0.15s ease, transform 0.12s ease;
 }
 
 .cta-link:hover,
 .cta-link:focus-visible {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(216, 90, 48, 0.3);
-}
-
-.cta-link:focus-visible {
-  outline: 2px solid #D85A30;
-  outline-offset: 2px;
+  background: #c14e27;
+  transform: translateY(-1px);
 }
 
 @media (max-width: 480px) {
-  header {
-    padding: 2rem 1rem 1.5rem;
+  body {
+    padding: 1.75rem 1rem 3rem;
   }
 
   h1 {
-    font-size: 36px;
-  }
-
-  main {
-    padding: 0 1rem 3rem;
+    font-size: 24px;
   }
 
   #runner-list {
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   }
-
-  .head-to-head-section {
-    margin-top: 3rem;
-    padding-top: 2rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   #runner-list li,
-  nav a,
+  .cta-link,
   #runner-search {
     transition: none;
   }
