@@ -52,7 +52,7 @@ h1::after {
   height: 4px;
   margin-top: 12px;
   border-radius: 4px;
-  background: linear-gradient(90deg, #D85A30, #1D9E75);
+  background: #1D9E75;
 }
 
 header {
@@ -211,18 +211,18 @@ header {
   font-weight: 600;
   color: white;
   text-decoration: none;
-  background: #D85A30;
+  background: #1D9E75;
   border-radius: 24px;
   padding: 12px 28px;
   transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-  box-shadow: 0 2px 8px rgba(216, 90, 48, 0.2);
+  box-shadow: 0 2px 8px rgba(29, 158, 117, 0.2);
 }
 
 .cta-link:hover,
 .cta-link:focus-visible {
-  background: #c14e27;
+  background: #158b63;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(216, 90, 48, 0.3);
+  box-shadow: 0 4px 12px rgba(29, 158, 117, 0.3);
 }
 
 @media (max-width: 480px) {
