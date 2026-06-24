@@ -139,6 +139,13 @@
 .widget-best-day .footer {
     font-size: 11px; color: #aaa; text-align: center; line-height: 1.4;
   }
+.widget-best-day .tooltip-popup {
+    position: fixed; z-index: 1000; display: none;
+    background: #1a1a1a; color: white; font-size: 12px; line-height: 1.4;
+    padding: 8px 10px; border-radius: 6px; max-width: 240px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  }
+.widget-best-day .tooltip-popup.visible { display: block; }
 </style>
   <div class="widget-inner">
     
@@ -156,6 +163,7 @@
   <div class="floor"></div>
   <div class="footer" id="best-day-footer"></div>
 </div>
+<div class="tooltip-popup" id="best-day-tooltip-popup"></div>
 
 
 
@@ -245,6 +253,46 @@ function show(mode) {
 
 document.getElementById('best-day-btn-actual').addEventListener('click', function() { show('actual'); });
 document.getElementById('best-day-btn-adjusted').addEventListener('click', function() { show('adjusted'); });
+
+function showTooltip(el, text) {
+  var popup = document.getElementById('best-day-tooltip-popup');
+  popup.textContent = text;
+  popup.classList.add('visible');
+  var rect = el.getBoundingClientRect();
+  var popupWidth = popup.offsetWidth;
+  var left = rect.left + rect.width / 2 - popupWidth / 2;
+  left = Math.max(8, Math.min(left, window.innerWidth - popupWidth - 8));
+  var top = rect.top - popup.offsetHeight - 8;
+  if (top < 8) top = rect.bottom + 8;
+  popup.style.left = left + 'px';
+  popup.style.top = top + 'px';
+}
+
+function hideTooltip() {
+  var popup = document.getElementById('best-day-tooltip-popup');
+  popup.classList.remove('visible');
+  popup.dataset.forBlock = '';
+}
+
+document.getElementById('best-day-podium').addEventListener('click', function(e) {
+  var block = e.target.closest('.block[title]');
+  if (!block) { hideTooltip(); return; }
+  e.stopPropagation();
+  var text = block.getAttribute('title');
+  var popup = document.getElementById('best-day-tooltip-popup');
+  if (popup.classList.contains('visible') && popup.dataset.forBlock === text) {
+    hideTooltip();
+    return;
+  }
+  popup.dataset.forBlock = text;
+  showTooltip(block, text);
+});
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.block[title]') && !e.target.closest('#best-day-tooltip-popup')) {
+    hideTooltip();
+  }
+});
 
 show('actual');
 
@@ -673,7 +721,7 @@ new Chart(document.getElementById('best-route-chart'), {
 .widget-most-reliable .hero-sub { font-size: 14px; color: #666; margin-top: 8px; }
 .widget-most-reliable .hero-dim { font-size: 12px; color: #999; margin-top: 4px; }
 .widget-most-reliable .tooltip-races { display: none; position: absolute; background: #ffffff; border: 1px solid #e0dfd9; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #1a1a1a; z-index: 10; white-space: pre-line; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-.widget-most-reliable .hero:hover .tooltip-races { display: block; }
+.widget-most-reliable .hero:hover .tooltip-races, .widget-most-reliable .hero.show-tip .tooltip-races { display: block; }
 .widget-most-reliable .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 8px; font-size: 12px; color: #666; }
 .widget-most-reliable .legend span { display: flex; align-items: center; gap: 5px; }
 .widget-most-reliable .leg-box { width: 10px; height: 10px; border-radius: 2px; }
@@ -700,7 +748,7 @@ new Chart(document.getElementById('best-route-chart'), {
     <div class="hero-sub">4 of 5 within <span style="font-weight:500;color:#1D9E75;">±4.2%</span></div>
     <div class="hero-dim">odd one out: Drinahilly</div>
   </div>
-  <div class="hero" style="position:relative; cursor:pointer;">
+  <div class="hero" id="most-reliable-hero-races" style="position:relative; cursor:pointer;">
     <div class="hero-label">Most races in a year</div>
     <div class="hero-year" style="color:#5DCAA5;">2013</div>
     <div class="hero-sub"><span style="font-weight:500;color:#5DCAA5;">5</span> races</div>
@@ -753,6 +801,17 @@ sData.forEach(r => {
     '<span class="sent-badge c-' + r.c + ' bg-' + r.c + '">' + r.v + '</span></div>';
 });
 document.getElementById('most-reliable-sentences').innerHTML = h;
+
+const heroRaces = document.getElementById('most-reliable-hero-races');
+heroRaces.addEventListener('click', (e) => {
+  e.stopPropagation();
+  heroRaces.classList.toggle('show-tip');
+});
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#most-reliable-hero-races')) {
+    heroRaces.classList.remove('show-tip');
+  }
+});
 
 })();
 </script>

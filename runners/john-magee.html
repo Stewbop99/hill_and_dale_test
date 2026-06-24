@@ -139,6 +139,13 @@
 .widget-best-day .footer {
     font-size: 11px; color: #aaa; text-align: center; line-height: 1.4;
   }
+.widget-best-day .tooltip-popup {
+    position: fixed; z-index: 1000; display: none;
+    background: #1a1a1a; color: white; font-size: 12px; line-height: 1.4;
+    padding: 8px 10px; border-radius: 6px; max-width: 240px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  }
+.widget-best-day .tooltip-popup.visible { display: block; }
 </style>
   <div class="widget-inner">
     
@@ -156,6 +163,7 @@
   <div class="floor"></div>
   <div class="footer" id="best-day-footer"></div>
 </div>
+<div class="tooltip-popup" id="best-day-tooltip-popup"></div>
 
 
 
@@ -245,6 +253,46 @@ function show(mode) {
 
 document.getElementById('best-day-btn-actual').addEventListener('click', function() { show('actual'); });
 document.getElementById('best-day-btn-adjusted').addEventListener('click', function() { show('adjusted'); });
+
+function showTooltip(el, text) {
+  var popup = document.getElementById('best-day-tooltip-popup');
+  popup.textContent = text;
+  popup.classList.add('visible');
+  var rect = el.getBoundingClientRect();
+  var popupWidth = popup.offsetWidth;
+  var left = rect.left + rect.width / 2 - popupWidth / 2;
+  left = Math.max(8, Math.min(left, window.innerWidth - popupWidth - 8));
+  var top = rect.top - popup.offsetHeight - 8;
+  if (top < 8) top = rect.bottom + 8;
+  popup.style.left = left + 'px';
+  popup.style.top = top + 'px';
+}
+
+function hideTooltip() {
+  var popup = document.getElementById('best-day-tooltip-popup');
+  popup.classList.remove('visible');
+  popup.dataset.forBlock = '';
+}
+
+document.getElementById('best-day-podium').addEventListener('click', function(e) {
+  var block = e.target.closest('.block[title]');
+  if (!block) { hideTooltip(); return; }
+  e.stopPropagation();
+  var text = block.getAttribute('title');
+  var popup = document.getElementById('best-day-tooltip-popup');
+  if (popup.classList.contains('visible') && popup.dataset.forBlock === text) {
+    hideTooltip();
+    return;
+  }
+  popup.dataset.forBlock = text;
+  showTooltip(block, text);
+});
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.block[title]') && !e.target.closest('#best-day-tooltip-popup')) {
+    hideTooltip();
+  }
+});
 
 show('actual');
 
