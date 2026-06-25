@@ -312,16 +312,20 @@ show('actual');
 .widget-best-year .legend span { display: flex; align-items: center; gap: 4px; }
 .widget-best-year .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
 .widget-best-year .chart-wrap { position: relative; width: 100%; height: 360px; }
-.widget-best-year .toggle { margin-bottom: 14px; }
-.widget-best-year .toggle button { font-size: 13px; padding: 6px 14px; border-radius: 6px; cursor: pointer; border: 1px solid #ccc; background: transparent; color: #1a1a1a; margin-right: 4px; }
-.widget-best-year .toggle button.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+.widget-best-year .toggle { display: flex; gap: 4px; margin-bottom: 14px; background: #EEEDE9; border-radius: 8px; padding: 3px; max-width: 280px; }
+.widget-best-year .toggle button { flex: 1; font-size: 13px; font-weight: 400; padding: 7px 0; border-radius: 6px; cursor: pointer; border: none; background: transparent; color: #888; transition: all 0.15s ease; }
+.widget-best-year .toggle button.active { background: #fff; color: #1a1a1a; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 .widget-best-year .comment-sentence { font-size: 18px; font-weight: bold; color: #666; margin-top: 16px; line-height: 1.5; }
 </style>
   <div class="widget-inner">
     
 <h1>William Miscampbell</h1>
 <div class="header-title">BEST YEAR</div>
-<p class="subtitle">15 races across 3 qualifying seasons &middot; age-adjusted</p>
+<p class="subtitle" id="best-year-subtitle">15 races</p>
+<div class="toggle">
+  <button id="best-year-btn-raw">Actual</button>
+  <button id="best-year-btn-adjusted" class="active">Age-adjusted</button>
+</div>
 <div class="legend">
   <span><span class="swatch" style="background:#1D9E75;"></span>Best year</span>
   <span><span class="swatch" style="background:#85B7EB;"></span>Better than career</span>
@@ -338,27 +342,27 @@ show('actual');
   <script>
 (function() {
 
-const years = [2013, 2018, 2025];
-const gaps = [1.0, 5.4, -4.0];
-const nRaces = [5, 3, 3];
-const bestIdx = 1;
-const bestYear = '2018';
-const COMMENTS = ["2018 — You got your 💩 together", "2018 — The year you actually turned up", "2018 — Your calendar learned to behave", "2018 — The season everything clicked", "2018 — Your year of no excuses", "2018 — When the trails learned your name", "2018 — When the food didn’t disappear before you arrived", "2018 — When you got to O'Hares before the chips ran out", "2018 — The year you had to go for a cool down waiting for he rest of your crew!", "2018 — The season you made PRs nervous\"", "2018 — The season someone asked you how you trained mid-week!", "2018 — The season you justified those new trail shoes!", "2018 - Form like longstone granite, hard to shift!", "2018 - expensive year, early to bar gets the round!"];
-if (COMMENTS.length) {
-  const el = document.getElementById('best-year-comment');
-  el.textContent = COMMENTS[Math.floor(Math.random() * COMMENTS.length)];
-  el.style.display = '';
-}
+const TOTAL_RACES = 15;
+const RAW = {"years": [2013, 2018, 2025], "gaps": [1.0, 5.4, -4.0], "nRaces": [5, 3, 3], "bestIdx": 1, "bestYear": 2018, "totalSeasons": 3, "comments": ["2018 — You got your 💩 together", "2018 — The year you actually turned up", "2018 — Your calendar learned to behave", "2018 — The season everything clicked", "2018 — Your year of no excuses", "2018 — When the trails learned your name", "2018 — When the food didn’t disappear before you arrived", "2018 — When you got to O'Hares before the chips ran out", "2018 — The year you had to go for a cool down waiting for he rest of your crew!", "2018 — The season you made PRs nervous\"", "2018 — The season someone asked you how you trained mid-week!", "2018 — The season you justified those new trail shoes!", "2018 - Form like longstone granite, hard to shift!", "2018 - expensive year, early to bar gets the round!"]};
+const ADJUSTED = {"years": [2013, 2018, 2025], "gaps": [-1.8, 5.5, 1.1], "nRaces": [5, 3, 3], "bestIdx": 1, "bestYear": 2018, "totalSeasons": 3, "comments": ["2018 — You got your 💩 together", "2018 — The year you actually turned up", "2018 — Your calendar learned to behave", "2018 — The season everything clicked", "2018 — Your year of no excuses", "2018 — When the trails learned your name", "2018 — When the food didn’t disappear before you arrived", "2018 — When you got to O'Hares before the chips ran out", "2018 — The year you had to go for a cool down waiting for he rest of your crew!", "2018 — The season you made PRs nervous\"", "2018 — The season someone asked you how you trained mid-week!", "2018 — The season you justified those new trail shoes!", "2018 - Form like longstone granite, hard to shift!", "2018 - expensive year, early to bar gets the round!"]};
 
-const colors = gaps.map((g, i) => i === bestIdx ? '#1D9E75' : g > 0 ? '#85B7EB' : '#F09595');
+// Shared y-axis range across both modes, so bar heights are visually
+// comparable when toggling instead of each mode auto-scaling to fill the chart.
+const ALL_GAPS = RAW.gaps.concat(ADJUSTED.gaps);
+const GAP_PAD = (Math.max(...ALL_GAPS) - Math.min(...ALL_GAPS)) * 0.1 || 1;
+const Y_MIN = Math.min(...ALL_GAPS) - GAP_PAD;
+const Y_MAX = Math.max(...ALL_GAPS) + GAP_PAD;
+
+let chart = null;
+let bestYear = null;
 
 const yearLabelPlugin = {
   id: 'yearLabel',
-  afterDraw(chart) {
-    const meta = chart.getDatasetMeta(0);
-    const bar = meta.data[bestIdx];
+  afterDraw(c) {
+    const meta = c.getDatasetMeta(0);
+    const bar = meta.data[c.config._bestIdx];
     if (!bar) return;
-    const ctx = chart.ctx;
+    const ctx = c.ctx;
     const barHeight = Math.abs(bar.y - bar.base);
     const fontSize = Math.min(22, barHeight * 0.8);
     if (fontSize < 8) return;
@@ -374,36 +378,66 @@ const yearLabelPlugin = {
   }
 };
 
-new Chart(document.getElementById('best-year-chart'), {
-  type: 'bar',
-  data: {
-    labels: years.map(String),
-    datasets: [{ data: gaps, backgroundColor: colors, borderRadius: 4, barPercentage: 0.7 }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    scales: {
-      y: {
-        title: { display: true, text: '% better than career median', font: { size: 12 } },
-        grid: { color: 'rgba(128,128,128,0.1)' },
-        ticks: { callback: v => (v > 0 ? '+' : '') + v + '%' }
-      },
-      x: { ticks: { autoSkip: false, maxRotation: 45 }, grid: { display: false } }
+function show(mode) {
+  const payload = mode === 'raw' ? RAW : ADJUSTED;
+  const { years, gaps, nRaces, bestIdx } = payload;
+  bestYear = String(payload.bestYear);
+
+  document.getElementById('best-year-subtitle').textContent =
+    `${TOTAL_RACES} races across ${payload.totalSeasons} qualifying seasons`;
+
+  document.getElementById('best-year-btn-adjusted').className = mode === 'adjusted' ? 'active' : '';
+  document.getElementById('best-year-btn-raw').className = mode === 'raw' ? 'active' : '';
+
+  if (payload.comments.length) {
+    const el = document.getElementById('best-year-comment');
+    el.textContent = payload.comments[Math.floor(Math.random() * payload.comments.length)];
+    el.style.display = '';
+  } else {
+    document.getElementById('best-year-comment').style.display = 'none';
+  }
+
+  const colors = gaps.map((g, i) => i === bestIdx ? '#1D9E75' : g > 0 ? '#85B7EB' : '#F09595');
+
+  if (chart) chart.destroy();
+  chart = new Chart(document.getElementById('best-year-chart'), {
+    type: 'bar',
+    data: {
+      labels: years.map(String),
+      datasets: [{ data: gaps, backgroundColor: colors, borderRadius: 4, barPercentage: 0.7 }]
     },
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: ctx => {
-            const g = gaps[ctx.dataIndex];
-            return [(g > 0 ? '+' : '') + g.toFixed(1) + '% vs career', nRaces[ctx.dataIndex] + ' races'];
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      scales: {
+        y: {
+          min: Y_MIN, max: Y_MAX,
+          title: { display: true, text: '% better than career median', font: { size: 12 } },
+          grid: { color: 'rgba(128,128,128,0.1)' },
+          ticks: { callback: v => (v > 0 ? '+' : '') + v + '%' }
+        },
+        x: { ticks: { autoSkip: false, maxRotation: 45 }, grid: { display: false } }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const g = gaps[ctx.dataIndex];
+              return [(g > 0 ? '+' : '') + g.toFixed(1) + '% vs career', nRaces[ctx.dataIndex] + ' races'];
+            }
           }
         }
       }
-    }
-  },
-  plugins: [yearLabelPlugin]
-});
+    },
+    plugins: [yearLabelPlugin]
+  });
+  chart.config._bestIdx = bestIdx;
+}
+
+document.getElementById('best-year-btn-adjusted').addEventListener('click', () => show('adjusted'));
+document.getElementById('best-year-btn-raw').addEventListener('click', () => show('raw'));
+
+show('adjusted');
 
 })();
 </script>
