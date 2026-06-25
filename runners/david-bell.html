@@ -79,7 +79,7 @@
 .widget-best-day /* podium */
   .podium {
     display: flex; gap: 8px; align-items: flex-end;
-    min-height: 220px; padding: 0 4px;
+    min-height: 290px; padding: 0 4px;
   }
 .widget-best-day .podium-slot {
     flex: 1; display: flex; flex-direction: column;
@@ -111,24 +111,29 @@
     font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 3px;
     text-shadow: 0 1px 1px rgba(0,0,0,0.2);
   }
+.widget-best-day .block-adj {
+    font-size: 8px; font-weight: 600; letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.45); margin-top: 4px; text-align: center;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  }
 .widget-best-day /* medal-specific */
   .gold .medal-emoji { font-size: 28px; }
 .widget-best-day .silver .medal-emoji, .widget-best-day .bronze .medal-emoji { font-size: 22px; }
 .widget-best-day .gold .block {
-    height: 140px;
+    height: 205px;
     background: linear-gradient(170deg, #D4A418 0%, #F2D06B 40%, #C8962E 100%);
     border: 1px solid #B8860B; border-bottom: none;
     box-shadow: 0 2px 12px rgba(212,164,24,0.25);
   }
 .widget-best-day .gold .block-time { font-size: 22px; }
 .widget-best-day .silver .block {
-    height: 108px;
+    height: 168px;
     background: linear-gradient(170deg, #A8ACB0 0%, #D0D3D6 40%, #8A8D90 100%);
     border: 1px solid #9E9E9E; border-bottom: none;
   }
 .widget-best-day .silver .block-time { font-size: 18px; }
 .widget-best-day .bronze .block {
-    height: 80px;
+    height: 132px;
     background: linear-gradient(170deg, #A0623A 0%, #C48A5E 40%, #8B5E3C 100%);
     border: 1px solid #8B5E3C; border-bottom: none;
   }
@@ -172,7 +177,7 @@
 (function() {
 
 const ACTUAL   = [{"race": "Loughshannagh", "year": 2010, "time": "00:54:16", "score": 11.1, "place": 35, "field": 122}, {"race": "Rocky", "year": 2011, "time": "00:41:30", "score": 13.3, "place": 37, "field": 132}, {"race": "Meels", "year": 2011, "time": "00:38:20", "score": 13.9, "place": 42, "field": 165}];
-const ADJUSTED = [{"race": "Loughshannagh", "year": 2017, "time": "00:47:49", "score": -2.3, "place": 54, "field": 127}, {"race": "Moughanmore", "year": 2017, "time": "00:34:48", "score": -1.9, "place": 54, "field": 163}, {"race": "Millstone", "year": 2017, "time": "00:41:41", "score": -1.2, "place": 60, "field": 146}];
+const ADJUSTED = [{"race": "Loughshannagh", "year": 2017, "time": "00:47:49", "score": -2.3, "place": 8, "field": 127}, {"race": "Moughanmore", "year": 2017, "time": "00:34:48", "score": -1.9, "place": 7, "field": 163}, {"race": "Millstone", "year": 2017, "time": "00:41:41", "score": -1.2, "place": 9, "field": 146}];
 const TIER_COMMENT_POOLS = {"gold": ["Sweet spot days!", "When you shone the brightest!", "When the stop watch loves you back", "When the hills rolled out a red carpet", "When the gradient lost the argument!", "Trying to stay ahead of the midges!", "Career Peak", "Top of Your Game", "Your Sharpest Form", "The One You Nailed", "Your Benchmark Day", "Your Defining Run"], "silver": ["Goldilocks Races", "The days you found the flow!", "Thriving not surviving!", "When you ran like you stole someone else's lungs!", "When you heard that the food was disappearing at Doran's", "At Your Best", "Peak on the Peaks", "When Everything Clicked", "Prime Time Performance", "Your High-Water Mark", "Your Peak Moment", "Your Top Gear Day"], "bronze": ["The planets all lined up on these days!", "Mojo working races!", "Me one - gravity nil!", "A wild mountain TIME!", "When you heard that the beer was running out at Mary Margaret's", "Peak of Your Powers", "Your Finest Hour", "The Day It All Came Together", "Your Standout Race", "Your Gold-Standard Run", "Your Signature Race", "Your Breakout Performance!"]};
 const TIER_COMMENTS = {};
 for (const tier in TIER_COMMENT_POOLS) {
@@ -217,9 +222,11 @@ function show(mode) {
     var slot = document.createElement('div');
     slot.className = 'podium-slot ' + cls;
 
+    var adjTag = mode === 'adjusted' ? '<div class="block-adj">(ADJ)</div>' : '';
+
     var placeHtml = '';
     if (r.place != null) {
-      placeHtml = '<div class="block-place">' + r.place + ordinal(r.place) + ' of ' + r.field + '</div>';
+      placeHtml = '<div class="block-place">' + r.place + ordinal(r.place) + ' of ' + r.field + '</div>' + adjTag;
     }
 
     var comment = TIER_COMMENTS[cls] || '';
@@ -234,6 +241,7 @@ function show(mode) {
       '</div>' +
       '<div class="block"' + titleAttr + '>' +
         '<div class="block-time">' + fmtTime(r.time) + '</div>' +
+        adjTag +
         '<div class="block-score">' + scoreLabel(r.score) + '</div>' +
         placeHtml +
       '</div>';
@@ -468,14 +476,15 @@ show('adjusted');
 .widget-career-chart .legend-line { width: 20px; height: 2px; }
 .widget-career-chart .chart-wrap { position: relative; width: 100%; height: 400px; margin-bottom: 24px; }
 .widget-career-chart .comment-para { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 16px; }
+.widget-career-chart .refresh-hint { font-size: 12px; font-style: italic; color: #c4c4c4; margin-bottom: 16px; }
 .widget-career-chart .footer { font-size: 12px; color: #888; }
 </style>
   <div class="widget-inner">
     
 <div class="card">
   <h1>David Bell</h1>
-  <div class="header-title">CAREER TIMELINE</div>
-  <p class="subtitle">Performance over time (91 races, 2009–2026)</p>
+  <div class="header-title">CAREER PERFORMANCE TIMELINE</div>
+  <p class="subtitle">Performance over time (91 races, 2009–2026) - ratio of your race time compared to top tier runners</p>
   <div class="legend">
     <div class="legend-item"><div class="legend-swatch" style="background:#1D9E75;"></div><span>Raw score &mdash; mouse over for race times</span></div>
     <div class="legend-item"><div class="legend-swatch" style="background:#D85A30;"></div><span>Age-adjusted</span></div>
@@ -484,6 +493,7 @@ show('adjusted');
   </div>
   <div class="chart-wrap"><canvas id="career-chart-chart"></canvas></div>
   <p class="comment-para" id="career-chart-comment" style="display:none;"></p>
+  <p class="refresh-hint">Hit refresh for a second opinion!</p>
   <p class="footer">Y-axis inverted: up = faster. Hover for race details. Trend lines fit all individual races. Age-adjusted trend flat = ageing at the typical rate; rising = ageing well; falling = ageing faster than typical.</p>
 </div>
 
@@ -668,6 +678,11 @@ const BACKGROUND_COMMENTS = ["Ninety-one races and an adjusted line flatter than
       <div class="legend-swatch" style="background: #D85A30;"></div>
       <span>Bogey route</span>
     </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background: #1D9E7559;"></div>
+      <div class="legend-swatch" style="background: #D85A3059;"></div>
+      <span>Sparse data (&lt;4 races)</span>
+    </div>
   </div>
 
   <div class="chart-wrap">
@@ -687,17 +702,14 @@ const BACKGROUND_COMMENTS = ["Ninety-one races and an adjusted line flatter than
   <script>
 (function() {
 
-const LABELS = ["Slieve Donard (12)", "Christmas Cracker (4)", "Loughshannagh (8)", "Hen and Cock (3)", "Meels (6)", "Binnian (9)", "Millstone (7)", "Rocky (7)", "Slieve Muck (1)", "Moughanmore (4)", "Hen and Rocky (1)", "Mcveigh Classic (2)", "Slieve Martin (5)", "Donard Summit (1)", "Monument (2)", "Tollymore (9)", "Lukes (2)", "Castlewellan (2)", "Drinahilly (4)", "Donard Forest (2)"];
-const VALUES = [4.167567063607536, 2.861206413114486, 2.2702630045532755, 1.8929476933708378, 1.227646925541289, 1.1392268072898222, 0.9110102392004138, 0.3860913660913645, 0.06970561977694281, -0.009852466557359685, -0.2666105853854914, -0.31300692276039627, -0.3550910877726777, -0.37424900535852795, -0.8795945374724884, -0.8907661655505263, -1.2940822764599902, -1.7788582656235663, -2.9775315478732067, -4.815772208050191];
-const COLORS = ["#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#D85A30", "#D85A30", "#D85A30", "#D85A30", "#D85A30", "#D85A30", "#D85A30", "#D85A30", "#D85A30", "#D85A30", "#D85A30"];
-const ROUTE_TITLES = ["Slieve Donard", "Christmas Cracker", "Loughshannagh", "Hen and Cock", "Meels", "Binnian", "Millstone", "Rocky", "Slieve Muck", "Moughanmore", "Hen and Rocky", "Mcveigh Classic", "Slieve Martin", "Donard Summit", "Monument", "Tollymore", "Lukes", "Castlewellan", "Drinahilly", "Donard Forest"];
-const COMMENT_POOLS = [["Cruising up the tourist track like it was a day out on your holidays.", "Steep up, steep down, sea views the whole way — and you actually had enough puff to take it in."], ["Someone said this one suits you - it actually does!", "Like the price of a pint in Mary Margaret's — not too steep.", "Flat, fast, no surprises — you unwrapped this one early.", "Someone said this one suits you - it doesn't!"], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], ["You don't like it quick and frantic!", "Looking for another gear on the flat - oops there isn't one!", "Didn't you see the invisible fridge on my back?", "Lets get this over with quickly or maybe a bit slower than that!", "Looking for another gear on the flat — oops there isn't one.", "Looking for another gear on the flat — oops there isn't one."], []];
-const TOOLTIPS = ROUTE_TITLES.map((title, i) => {
-  const pool = COMMENT_POOLS[i];
-  if (!pool.length) return title;
-  const comment = pool[Math.floor(Math.random() * pool.length)];
-  return title + ': ' + comment;
-});
+const LABELS = ["Slieve Donard (12)", "Christmas Cracker (4)", "Loughshannagh (8)", "Hen and Cock (3)", "Meels (6)", "Binnian (9)", "Millstone (7)", "Rocky (7)", "Slieve Muck (1)", "Moughanmore (4)", "Hen and Rocky (1)", "Slieve Martin (5)", "Donard Summit (1)", "Mcveigh Classic (2)", "Monument (2)", "Tollymore (9)", "Lukes (2)", "Castlewellan (2)", "Drinahilly (4)", "Donard Forest (2)"];
+const VALUES = [4.161254586788607, 2.7665858557588723, 2.281742968299371, 1.8925006439855476, 1.2971892535464438, 1.1934400892205517, 0.8224633182796129, 0.33474897485806676, 0.11765496335902619, 0.10282989567906634, -0.2295749829349011, -0.26303166197404704, -0.37421000564656637, -0.44788422794325217, -0.7950460074101261, -0.8032587179809123, -1.255073817213731, -1.5490323580633842, -2.945717249027401, -4.696011312745487];
+const COLORS = ["#1D9E75", "#1D9E75", "#1D9E75", "#1D9E7559", "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E7559", "#1D9E75", "#D85A3059", "#D85A30", "#D85A3059", "#D85A3059", "#D85A3059", "#D85A30", "#D85A3059", "#D85A3059", "#D85A30", "#D85A3059"];
+const COMMENT_POOLS = [["Cruising up the tourist track like it was a day out on your holidays.", "Steep up, steep down, sea views the whole way — and you actually had enough puff to take it in."], ["Someone said this one suits you - it actually does!", "Like the price of a pint in Mary Margaret's — not too steep.", "Flat, fast, no surprises — you unwrapped this one early.", "Someone said this one suits you - it doesn't!"], ["As usual in a hurry to get to the beach!", "Not here for a good time here for a long time!", "Built for this gradient — everyone else is just visiting.", "You either love this one or you hate it — looks like you love it.", "The Loughshannagh triathlon — scramble, lough, beach — three sports in one and you medalled in all of them."], ["You like it up and down and up and down again!", "Here you can show off your titanium ankles!", "Like a flea on a Mongolian camel — two humps to cross."], ["Steep is your flat!", "Someone said this one suits you - it actually does!", "Steep is your flat — proper all-rounder's race, and you're a proper all-rounder.", "Good all-rounder — punchy climbs, speed on the descent."], ["A true climber steeper the better right?!", "A true climber, steeper the better, right?!"], ["Someone said this one suits you - it actually does!", "Good all-rounder — punchy climbs, speed on the descent.", "Like a good stonemason, you can handle all surfaces."], ["Good all rounder, punchy climbs speed on the desecent", "Good all-rounder — punchy climbs, speed on the descent.", "Good all-rounder — punchy climbs, speed on the descent."], [], [], [], [], [], ["Someone said this one suits you - it doesn't!", "This route always more like a slow reflective walk through personal disappointment.", "Looking for another gear on the flat — oops there isn't one."], [], ["Looking for another gear on the flat - oops there isn't one!", "You can't see the wood for the trees in this one.", "Use this route to bravely demonstrate what happens when enthusiasm outruns fitness.", "Someone said this one suits you - it doesn't!", "All that build-up and it's flat the whole way — what a let down.", "Looking for another gear on the flat — oops, there isn't one.", "All that build-up and it's flat the whole way — what a let down.", "Someone said this one suits you - it doesn't!"], ["Your intentions may be bombproof but are your ankles?", "Not everyone likes launching off peat hags into a sheugh!", "My new titanium ankles didn't arrive yet!", "Leaping off peat hags into sheughs isn't for you is it?", "Reassuring for you that gravity remains undefeated here.", "Someone said this one suits you - it doesn't!", "Too steep for this flat runner, a racehorse not a mule!", "Like the price of a pint in the Slieve Donard Hotel — steep.", "The climb nearly killed you and the peat hags finished the job on the way down.", "Reassuring for you that gravity remains undefeated here.", "This route always more like a slow reflective walk through personal disappointment!", "Too steep for this flat runner, a racehorse not a mule!"], ["I'm a mountain goat not a racehorse.", "This route always more like a slow reflective walk through personal disappointment!", "I'm a mountain goat not a racehorse."], ["You don't like it quick and frantic!", "Looking for another gear on the flat - oops there isn't one!", "Didn't you see the invisible fridge on my back?", "Lets get this over with quickly or maybe a bit slower than that!", "Looking for another gear on the flat — oops there isn't one.", "Looking for another gear on the flat — oops there isn't one."], []];
+// Pick one comment per bar on load (re-rolls on refresh).
+const COMMENTS = COMMENT_POOLS.map(
+  pool => pool.length ? pool[Math.floor(Math.random() * pool.length)] : null
+);
 
 new Chart(document.getElementById('best-route-chart'), {
   type: 'bar',
@@ -729,7 +741,8 @@ new Chart(document.getElementById('best-route-chart'), {
       legend: { display: false },
       tooltip: {
         callbacks: {
-          label: ctx => TOOLTIPS[ctx.dataIndex]
+          // Comment only — no stat. Falls back to the route name if no comment.
+          label: ctx => COMMENTS[ctx.dataIndex] || ctx.label
         }
       }
     }

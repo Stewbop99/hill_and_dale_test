@@ -79,7 +79,7 @@
 .widget-best-day /* podium */
   .podium {
     display: flex; gap: 8px; align-items: flex-end;
-    min-height: 220px; padding: 0 4px;
+    min-height: 290px; padding: 0 4px;
   }
 .widget-best-day .podium-slot {
     flex: 1; display: flex; flex-direction: column;
@@ -111,24 +111,29 @@
     font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 3px;
     text-shadow: 0 1px 1px rgba(0,0,0,0.2);
   }
+.widget-best-day .block-adj {
+    font-size: 8px; font-weight: 600; letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.45); margin-top: 4px; text-align: center;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  }
 .widget-best-day /* medal-specific */
   .gold .medal-emoji { font-size: 28px; }
 .widget-best-day .silver .medal-emoji, .widget-best-day .bronze .medal-emoji { font-size: 22px; }
 .widget-best-day .gold .block {
-    height: 140px;
+    height: 205px;
     background: linear-gradient(170deg, #D4A418 0%, #F2D06B 40%, #C8962E 100%);
     border: 1px solid #B8860B; border-bottom: none;
     box-shadow: 0 2px 12px rgba(212,164,24,0.25);
   }
 .widget-best-day .gold .block-time { font-size: 22px; }
 .widget-best-day .silver .block {
-    height: 108px;
+    height: 168px;
     background: linear-gradient(170deg, #A8ACB0 0%, #D0D3D6 40%, #8A8D90 100%);
     border: 1px solid #9E9E9E; border-bottom: none;
   }
 .widget-best-day .silver .block-time { font-size: 18px; }
 .widget-best-day .bronze .block {
-    height: 80px;
+    height: 132px;
     background: linear-gradient(170deg, #A0623A 0%, #C48A5E 40%, #8B5E3C 100%);
     border: 1px solid #8B5E3C; border-bottom: none;
   }
@@ -172,7 +177,7 @@
 (function() {
 
 const ACTUAL   = [{"race": "Tollymore", "year": 2009, "time": "00:51:29", "score": 25.1, "place": 115, "field": 163}, {"race": "Mcveigh Classic", "year": 2009, "time": "00:47:56", "score": 26.9, "place": 132, "field": 160}, {"race": "Monument", "year": 2009, "time": "00:41:59", "score": 28.6, "place": 115, "field": 143}];
-const ADJUSTED = [{"race": "Millstone", "year": 2026, "time": "00:55:28", "score": 19.9, "place": 150, "field": 221}, {"race": "Hen And Cock", "year": 2026, "time": "00:44:01", "score": 21.5, "place": 101, "field": 162}, {"race": "Binnian", "year": 2026, "time": "00:37:51", "score": 22.1, "place": 161, "field": 227}];
+const ADJUSTED = [{"race": "Millstone", "year": 2026, "time": "00:55:28", "score": 19.9, "place": 88, "field": 221}, {"race": "Hen And Cock", "year": 2026, "time": "00:44:01", "score": 21.5, "place": 68, "field": 162}, {"race": "Binnian", "year": 2026, "time": "00:37:51", "score": 22.1, "place": 100, "field": 227}];
 const TIER_COMMENT_POOLS = {"gold": ["Sweet spot days!", "When you shone the brightest!", "When the stop watch loves you back", "When the hills rolled out a red carpet", "When the gradient lost the argument!", "Trying to stay ahead of the midges!", "Career Peak", "Top of Your Game", "Your Sharpest Form", "The One You Nailed", "Your Benchmark Day", "Your Defining Run"], "silver": ["Goldilocks Races", "The days you found the flow!", "Thriving not surviving!", "When you ran like you stole someone else's lungs!", "When you heard that the food was disappearing at Doran's", "At Your Best", "Peak on the Peaks", "When Everything Clicked", "Prime Time Performance", "Your High-Water Mark", "Your Peak Moment", "Your Top Gear Day"], "bronze": ["The planets all lined up on these days!", "Mojo working races!", "Me one - gravity nil!", "A wild mountain TIME!", "When you heard that the beer was running out at Mary Margaret's", "Peak of Your Powers", "Your Finest Hour", "The Day It All Came Together", "Your Standout Race", "Your Gold-Standard Run", "Your Signature Race", "Your Breakout Performance!"]};
 const TIER_COMMENTS = {};
 for (const tier in TIER_COMMENT_POOLS) {
@@ -217,9 +222,11 @@ function show(mode) {
     var slot = document.createElement('div');
     slot.className = 'podium-slot ' + cls;
 
+    var adjTag = mode === 'adjusted' ? '<div class="block-adj">(ADJ)</div>' : '';
+
     var placeHtml = '';
     if (r.place != null) {
-      placeHtml = '<div class="block-place">' + r.place + ordinal(r.place) + ' of ' + r.field + '</div>';
+      placeHtml = '<div class="block-place">' + r.place + ordinal(r.place) + ' of ' + r.field + '</div>' + adjTag;
     }
 
     var comment = TIER_COMMENTS[cls] || '';
@@ -234,6 +241,7 @@ function show(mode) {
       '</div>' +
       '<div class="block"' + titleAttr + '>' +
         '<div class="block-time">' + fmtTime(r.time) + '</div>' +
+        adjTag +
         '<div class="block-score">' + scoreLabel(r.score) + '</div>' +
         placeHtml +
       '</div>';
@@ -468,14 +476,15 @@ show('adjusted');
 .widget-career-chart .legend-line { width: 20px; height: 2px; }
 .widget-career-chart .chart-wrap { position: relative; width: 100%; height: 400px; margin-bottom: 24px; }
 .widget-career-chart .comment-para { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 16px; }
+.widget-career-chart .refresh-hint { font-size: 12px; font-style: italic; color: #c4c4c4; margin-bottom: 16px; }
 .widget-career-chart .footer { font-size: 12px; color: #888; }
 </style>
   <div class="widget-inner">
     
 <div class="card">
   <h1>Brendan Ward</h1>
-  <div class="header-title">CAREER TIMELINE</div>
-  <p class="subtitle">Performance over time (22 races, 2009–2026)</p>
+  <div class="header-title">CAREER PERFORMANCE TIMELINE</div>
+  <p class="subtitle">Performance over time (22 races, 2009–2026) - ratio of your race time compared to top tier runners</p>
   <div class="legend">
     <div class="legend-item"><div class="legend-swatch" style="background:#1D9E75;"></div><span>Raw score &mdash; mouse over for race times</span></div>
     <div class="legend-item"><div class="legend-swatch" style="background:#D85A30;"></div><span>Age-adjusted</span></div>
@@ -484,6 +493,7 @@ show('adjusted');
   </div>
   <div class="chart-wrap"><canvas id="career-chart-chart"></canvas></div>
   <p class="comment-para" id="career-chart-comment" style="display:none;"></p>
+  <p class="refresh-hint">Hit refresh for a second opinion!</p>
   <p class="footer">Y-axis inverted: up = faster. Hover for race details. Trend lines fit all individual races. Age-adjusted trend flat = ageing at the typical rate; rising = ageing well; falling = ageing faster than typical.</p>
 </div>
 
@@ -668,6 +678,11 @@ const BACKGROUND_COMMENTS = ["Twenty-two races split by a twelve-year gap that w
       <div class="legend-swatch" style="background: #D85A30;"></div>
       <span>Bogey route</span>
     </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background: #1D9E7559;"></div>
+      <div class="legend-swatch" style="background: #D85A3059;"></div>
+      <span>Sparse data (&lt;4 races)</span>
+    </div>
   </div>
 
   <div class="chart-wrap">
@@ -688,16 +703,13 @@ const BACKGROUND_COMMENTS = ["Twenty-two races split by a twelve-year gap that w
 (function() {
 
 const LABELS = ["Hen and Cock (1)", "Slieve Donard (1)", "Binnian (1)", "Millstone (2)", "Castlewellan (1)", "Tollymore (3)", "Lukes (2)", "Mcveigh Classic (1)", "Loughshannagh (3)", "Meels (1)", "Slieve Martin (1)", "Rocky (1)", "Drinahilly (1)", "Christmas Cracker (2)", "Monument (1)"];
-const VALUES = [5.6396312919852, 5.499610620684986, 5.446652010370266, 3.9230154865704963, 3.473919171614663, 2.847090475774866, 1.7044228375745696, 0.8760236226976107, 0.6936336761263189, 0.570821190297559, 0.2638176571345852, 0.20669981040195756, 0.1717246013540362, 0.037390258555510814, -0.16745501274830063];
-const COLORS = ["#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#D85A30"];
-const ROUTE_TITLES = ["Hen and Cock", "Slieve Donard", "Binnian", "Millstone", "Castlewellan", "Tollymore", "Lukes", "Mcveigh Classic", "Loughshannagh", "Meels", "Slieve Martin", "Rocky", "Drinahilly", "Christmas Cracker", "Monument"];
-const COMMENT_POOLS = [["You like it up and down and up and down again!", "Here you can show off your titanium ankles!", "Like a flea on a Mongolian camel — two humps to cross."], ["Cruising up the tourist track like it was a day out on your holidays.", "Steep up, steep down, sea views the whole way — and you actually had enough puff to take it in."], [], [], [], [], [], [], [], [], [], [], [], [], []];
-const TOOLTIPS = ROUTE_TITLES.map((title, i) => {
-  const pool = COMMENT_POOLS[i];
-  if (!pool.length) return title;
-  const comment = pool[Math.floor(Math.random() * pool.length)];
-  return title + ': ' + comment;
-});
+const VALUES = [5.679655381133408, 5.540283343886412, 5.493103107837636, 3.9765712243621443, 3.527506790739786, 2.8727646756717995, 1.6984418455958568, 0.9378294625658087, 0.7756955958769675, 0.6390771382748341, 0.3490824941528548, 0.2895108313263625, 0.20165840213308295, 0.05546744170473461, -0.12493258419912223];
+const COLORS = ["#1D9E7559", "#1D9E7559", "#1D9E7559", "#1D9E7559", "#1D9E7559", "#1D9E7559", "#1D9E7559", "#1D9E7559", "#1D9E7559", "#1D9E7559", "#1D9E7559", "#1D9E7559", "#1D9E7559", "#1D9E7559", "#D85A3059"];
+const COMMENT_POOLS = [["You like it up and down and up and down again!", "Here you can show off your titanium ankles!", "Like a flea on a Mongolian camel — two humps to cross."], ["Cruising up the tourist track like it was a day out on your holidays.", "Steep up, steep down, sea views the whole way — and you actually had enough puff to take it in."], ["A true climber steeper the better right?!", "A true climber, steeper the better, right?!"], ["Someone said this one suits you - it actually does!", "Good all-rounder — punchy climbs, speed on the descent.", "Like a good stonemason, you can handle all surfaces."], ["Here you are able to use that 5th gear you have!", "I'm a racehorse not a donkey!", "I'm a racehorse not a donkey!"], ["Someone said this one suits you - it actually does!", "Here you are able to use that 5th gear you have!", "Like the price of a pint in Doran's — not too steep.", "You have pace — flat, fast, forgiving, built for runners who actually have a fifth gear."], ["Your ankles are bombproof!", "This route lets you dance over peat hags while others pick their way.", "Good all-rounder — punchy climbs, speed on the descent.", "The climb didn't kill you and the peat hags couldn't catch you either.", "Good all-rounder — punchy climbs, speed on the descent."], ["Here you are able to use that 5th gear you have!", "Like the price of a pint in the Halfway House — not too steep.", "Here you are able to use that 5th gear you have!"], ["As usual in a hurry to get to the beach!", "Not here for a good time here for a long time!", "Built for this gradient — everyone else is just visiting.", "You either love this one or you hate it — looks like you love it.", "The Loughshannagh triathlon — scramble, lough, beach — three sports in one and you medalled in all of them."], ["Steep is your flat!", "Someone said this one suits you - it actually does!", "Steep is your flat — proper all-rounder's race, and you're a proper all-rounder.", "Good all-rounder — punchy climbs, speed on the descent."], [], ["Good all rounder, punchy climbs speed on the desecent", "Good all-rounder — punchy climbs, speed on the descent.", "Good all-rounder — punchy climbs, speed on the descent."], ["You like it quick and frantic!", "Someone said this one suits you - it actually does!", "Go hard then go home (early)!", "Here you are able to use that 5th gear you have!", "Like the price of a pint in Doran's — not too steep.", "Here you are able to use that 5th gear you have!"], ["Someone said this one suits you - it actually does!", "Like the price of a pint in Mary Margaret's — not too steep.", "Flat, fast, no surprises — you unwrapped this one early.", "Someone said this one suits you - it doesn't!"], []];
+// Pick one comment per bar on load (re-rolls on refresh).
+const COMMENTS = COMMENT_POOLS.map(
+  pool => pool.length ? pool[Math.floor(Math.random() * pool.length)] : null
+);
 
 new Chart(document.getElementById('best-route-chart'), {
   type: 'bar',
@@ -729,7 +741,8 @@ new Chart(document.getElementById('best-route-chart'), {
       legend: { display: false },
       tooltip: {
         callbacks: {
-          label: ctx => TOOLTIPS[ctx.dataIndex]
+          // Comment only — no stat. Falls back to the route name if no comment.
+          label: ctx => COMMENTS[ctx.dataIndex] || ctx.label
         }
       }
     }
